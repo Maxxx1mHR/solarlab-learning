@@ -1,0 +1,22 @@
+@use "./normilize";
+@use "./fonts";
+@use "./colors";
+@use "./typography";
+@use "./buttons";
+@use "./input";
+
+.container {
+  margin: 0 auto;
+  max-width: 1296px;
+}
+
+.wrapper {
+  &_m {
+    display: flex;
+    gap: 24px;
+  }
+  &_s {
+    display: flex;
+    gap: 12px;
+  }
+}

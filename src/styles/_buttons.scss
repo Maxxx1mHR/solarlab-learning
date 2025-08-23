@@ -1,0 +1,35 @@
+.button-text {
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  color: var(--base-white);
+  font: var(--T1);
+  cursor: pointer;
+}
+
+.button-primary {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  font: var(--T1-md);
+  cursor: pointer;
+  flex: 0 0 auto;
+
+  &_filled {
+    gap: 4px;
+    border: none;
+    background-color: var(--primary);
+    color: var(--base-white);
+  }
+
+  &_outline {
+    gap: 8px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    background-color: var(--base-white);
+  }
+}
