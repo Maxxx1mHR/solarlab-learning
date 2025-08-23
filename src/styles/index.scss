@@ -1,4 +1,5 @@
 @use "./normilize";
+@use "./mixins";
 @use "./fonts";
 @use "./colors";
 @use "./typography";
@@ -8,15 +9,4 @@
 .container {
   margin: 0 auto;
   max-width: 1296px;
-}
-
-.wrapper {
-  &_m {
-    display: flex;
-    gap: 24px;
-  }
-  &_s {
-    display: flex;
-    gap: 12px;
-  }
 }

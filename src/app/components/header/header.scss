@@ -1,3 +1,5 @@
+@use "mixins" as m;
+
 .header {
   &__top {
     padding: 10px;
@@ -5,7 +7,9 @@
   }
 
   &__buttons-wrapper {
+    display: flex;
     justify-content: end;
+    gap: 24px;
   }
 
   &__bottom {
@@ -14,8 +18,23 @@
     border-bottom: 1px solid var(--blue-gray-200);
   }
 
+  &__bottom-content {
+    display: flex;
+    gap: 24px;
+
+    @include m.media-tablet {
+      flex-direction: column;
+    }
+  }
+
   &__bottom-wrapper {
+    display: flex;
     flex: 1;
+    gap: 12px;
+
+    @include m.media-mobile {
+      flex-direction: column;
+    }
   }
 
   &__input-wrapper {
