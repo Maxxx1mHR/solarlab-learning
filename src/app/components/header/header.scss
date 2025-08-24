@@ -1,6 +1,6 @@
-@use "mixins" as m;
+@use "mixins" as media;
 
-.header {
+.app-header {
   &__top {
     padding: 10px;
     background-color: var(--default);
@@ -22,7 +22,7 @@
     display: flex;
     gap: 24px;
 
-    @include m.media-tablet {
+    @include media.media-tablet {
       flex-direction: column;
     }
   }
@@ -32,7 +32,7 @@
     flex: 1;
     gap: 12px;
 
-    @include m.media-mobile {
+    @include media.media-mobile {
       flex-direction: column;
     }
   }
@@ -47,6 +47,9 @@
     width: 100%;
     border-radius: 4px 0 0 4px;
     border-right: none;
+    &:focus {
+      outline: none;
+    }
   }
 
   &__button-search {

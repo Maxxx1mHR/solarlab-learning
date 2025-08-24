@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { Header } from '../header/header';
-import { ProductCard } from '../../shared/ui/product-card/product-card';
-import { Product } from '../../shared/ui/product-card/product-card.types';
-import { CommonModule } from '@angular/common';
+import {Component} from '@angular/core';
+import {Header} from '../header/header';
+import {ProductCard} from '../../shared/ui/product-card/product-card';
+import {Product} from '../../shared/ui/product-card/product-card.types';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-main',
   imports: [Header, ProductCard, CommonModule],
   templateUrl: './main.html',
   styleUrl: './main.scss',
+  standalone: true
 })
 export class Main {
   products: Product[] = [

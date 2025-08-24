@@ -1,12 +1,10 @@
-@use "./normilize";
-@use "./mixins";
-@use "./fonts";
-@use "./colors";
-@use "./typography";
-@use "./buttons";
-@use "./input";
+@use "./base/normilize";
+@use "./base/fonts";
+@use "./base/colors";
+@use "./base/typography";
+@use "./base/global";
 
-.container {
-  margin: 0 auto;
-  max-width: 1296px;
-}
+@use "./abstract/mixins";
+
+@use "./components/buttons";
+@use "./components/input";
