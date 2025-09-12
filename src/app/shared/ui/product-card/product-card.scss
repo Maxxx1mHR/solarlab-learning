@@ -1,0 +1,27 @@
+.product-card {
+  width: 306px;
+
+  &__image {
+    margin-bottom: 8px;
+    border-radius: 4px;
+  }
+
+  &__title {
+    color: var(--primary);
+    word-break: break-all;
+  }
+
+  &__price {
+    color: var(--default);
+  }
+
+  &__location {
+    font: var(--T1);
+    color: var(--blue-gray-500);
+  }
+
+  &__date {
+    font: var(--T1);
+    color: var(--blue-gray-500);
+  }
+}

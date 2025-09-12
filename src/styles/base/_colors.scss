@@ -1,0 +1,18 @@
+:root {
+  // Base colors
+  --default: #1e293b;
+  --primary: #3b82f6;
+  --base-white: #fff;
+
+  // Colors
+  --blue-gray-200: #e2e8f0;
+  --blue-gray-300: #cbd5e1;
+  --blue-gray-500: #64748b;
+
+  --danger-500: #ef4444;
+
+  --success: #22c55e;
+
+  // Derived color
+  --forms-border: var(--default);
+}
