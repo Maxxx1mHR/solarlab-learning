@@ -1,39 +1,22 @@
-<header class="app-header">
-  <div class="app-header__top">
+<header>
+  <div class="header-top">
     <div class="container">
-      <div class="app-header__buttons-wrapper">
-        <button class="button-text">
-          <img src="assets/icons/person.svg" alt="person" />
-          Войти
-        </button>
-        <button class="button-primary button-primary_filled">
-          Новое объявление
-          <img src="assets/icons/plus.svg" alt="plus" />
-        </button>
+      <div class="header-top__buttons-wrapper">
+        <p-button label="Войти" severity="primary" variant="text" icon="pi pi-user" class="header-top__button-login"/>
+        <p-button label="Новое объявление" icon="pi pi-plus" iconPos="right" class="header-top__button-add"/>
       </div>
     </div>
   </div>
-  <div class="app-header__bottom">
+  <div class="header-bottom">
     <div class="container">
-      <div class="app-header__bottom-content">
+      <div class="header-bottom__content">
         <h3>Доска объявлений</h3>
-        <div class="app-header__bottom-wrapper">
-          <button class="button-primary button-primary_outline">
-            <img src="assets/icons/list-nested.svg" alt="list" />
-            Все категории
-          </button>
-          <div class="app-header__input-wrapper">
-            <input
-              class="app-header__input input input_s"
-              type="text"
-              placeholder="Поиск по объявлениям"
+        <div class="header-bottom__wrapper">
+          <div class="header-bottom__input-wrapper">
+            <input type="text" placeholder="Поиск по объявлениям"
+                   class="header-bottom__input input input_s"
             />
-            <button
-              class="app-header__button-search button-primary button-primary_filled"
-            >
-              Найти
-              <img src="assets/icons/search.svg" alt="search" />
-            </button>
+            <p-button label="Найти" icon="pi pi-search" iconPos="right" size="large" class="header-bottom__search"/>
           </div>
         </div>
       </div>

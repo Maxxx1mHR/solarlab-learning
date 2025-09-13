@@ -1,17 +1,16 @@
 :root {
   // Base colors
-  --default: #1e293b;
-  --primary: #3b82f6;
+  --default: var(--p-slate-800);
+  --primary: var(--p-blue-500);
   --base-white: #fff;
 
   // Colors
-  --blue-gray-200: #e2e8f0;
-  --blue-gray-300: #cbd5e1;
-  --blue-gray-500: #64748b;
+  --blue-gray-200: var(--p-slate-200);
+  --blue-gray-300: var(--p-slate-300);
+  --blue-gray-500: var(--p-slate-500);
+  --danger-500: var(--p-red-500);
 
-  --danger-500: #ef4444;
-
-  --success: #22c55e;
+  --success: var(--p-green-500);
 
   // Derived color
   --forms-border: var(--default);
