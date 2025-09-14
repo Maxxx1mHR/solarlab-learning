@@ -16,8 +16,6 @@ export const MyPreset = definePreset(Aura, {
       900: '{blue.900}',
       950: '{blue.950}'
     },
-
-
   },
   components: {
     button: {

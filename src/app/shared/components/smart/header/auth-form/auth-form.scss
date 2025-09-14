@@ -1,0 +1,35 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__inputs-wrapper {
+    position: relative;
+
+    input {
+      min-width: 244px;
+    }
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__error-message {
+    position: absolute;
+    left: 0;
+    top: 32px;
+  }
+
+  &__submit-button {
+    margin: 0 auto;
+  }
+
+}
