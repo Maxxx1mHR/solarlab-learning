@@ -1,0 +1,34 @@
+<header>
+  <div class="header-top">
+    <div class="container">
+      <div class="header-top__buttons-wrapper">
+        <p-button (click)="authorizationPopover.toggle($event)" label="Войти" severity="primary" variant="text"
+                  icon="pi pi-user"
+                  class="header-top__button-login"/>
+        <p-button label="Новое объявление" icon="pi pi-plus" iconPos="right" class="header-top__button-add"/>
+        <p-popover #authorizationPopover>
+          <app-auth-form [popover]="authorizationPopover"/>
+        </p-popover>
+      </div>
+    </div>
+  </div>
+  <div class="header-bottom">
+    <div class="container">
+      <div class="header-bottom__content">
+        <h3>Доска объявлений</h3>
+        <div class="header-bottom__wrapper">
+          <p-button label="Все категории" variant="outlined" class="header-bottom__button-category">
+            <img src="assets/icons/list-nested.svg" alt="list"/>
+          </p-button>
+          <div class="header-bottom__input-wrapper">
+            <input type="text" pInputText placeholder="Поиск по объявлениям"
+                   class="header-bottom__input input input_s"
+            />
+            <p-button label="Найти" icon="pi pi-search" iconPos="right" size="large"
+                      class="header-bottom__button-search"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
