@@ -28,7 +28,6 @@ header {
       }
     }
   }
-
   .header-bottom {
     width: 100%;
     padding: 24px 10px;
@@ -83,4 +82,9 @@ header {
   }
 }
 
+.popover-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
 

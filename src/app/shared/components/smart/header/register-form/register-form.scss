@@ -1,12 +1,7 @@
-.auth-form {
+.register-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
-
-  &__header {
-    display: flex;
-    justify-content: space-between;
-  }
 
   &__inputs-wrapper {
     position: relative;
@@ -31,5 +26,4 @@
   &__submit-button {
     margin: 0 auto;
   }
-
 }
