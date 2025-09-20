@@ -2,13 +2,43 @@
   <div class="header-top">
     <div class="container">
       <div class="header-top__buttons-wrapper">
-        <p-button (click)="authorizationPopover.toggle($event)" label="Войти" severity="primary" variant="text"
-                  icon="pi pi-user"
-                  class="header-top__button-login"/>
-        <p-button label="Новое объявление" icon="pi pi-plus" iconPos="right" class="header-top__button-add"/>
-        <p-popover #authorizationPopover>
-          <app-auth-form [popover]="authorizationPopover"/>
-        </p-popover>
+        @if (authorizationSate.getState()) {
+          <p-button
+            (click)="popoverSettings.toggle($event)"
+            severity="primary"
+            variant="text"
+            class="header-top__button-login"
+          >
+            <ng-template pTemplate>
+              <i class="pi pi-user"></i>
+              <span>{{ userStore.user()?.name }}</span>
+              <i class="pi pi-chevron-down"></i>
+            </ng-template>
+          </p-button>
+          <p-button
+            label="Новое объявление"
+            icon="pi pi-plus"
+            iconPos="right"
+            class="header-top__button-add"
+          />
+        } @else {
+          <p-button
+            (click)="isLoginModalOpen = true"
+            label="Войти"
+            severity="primary"
+            variant="text"
+            icon="pi pi-user"
+            class="header-top__button-login"
+          />
+          <p-button
+            (click)="isRegisterModalOpen = true"
+            label="Зарегистрироваться"
+            severity="primary"
+            variant="text"
+            icon="pi pi-user-plus"
+            class="header-top__button-login"
+          />
+        }
       </div>
     </div>
   </div>
@@ -17,18 +47,47 @@
       <div class="header-bottom__content">
         <h3>Доска объявлений</h3>
         <div class="header-bottom__wrapper">
-          <p-button label="Все категории" variant="outlined" class="header-bottom__button-category">
-            <img src="assets/icons/list-nested.svg" alt="list"/>
+          <p-button
+            label="Все категории"
+            variant="outlined"
+            class="header-bottom__button-category"
+          >
+            <img src="assets/icons/list-nested.svg" alt="list" />
           </p-button>
           <div class="header-bottom__input-wrapper">
-            <input type="text" pInputText placeholder="Поиск по объявлениям"
-                   class="header-bottom__input input input_s"
+            <input
+              type="text"
+              pInputText
+              placeholder="Поиск по объявлениям"
+              class="header-bottom__input input input_s"
             />
-            <p-button label="Найти" icon="pi pi-search" iconPos="right" size="large"
-                      class="header-bottom__button-search"/>
+            <p-button
+              label="Найти"
+              icon="pi pi-search"
+              iconPos="right"
+              size="large"
+              class="header-bottom__button-search"
+            />
           </div>
         </div>
       </div>
     </div>
   </div>
 </header>
+<p-popover #popoverSettings>
+  <div class="popover">
+    <p-button
+      label="Выйти"
+      variant="text"
+      severity="danger"
+      (click)="onLogout()"
+    />
+  </div>
+</p-popover>
+
+<app-modal [(visible)]="isLoginModalOpen" header="Авторизация">
+  <app-login-form (closeModal)="isLoginModalOpen = false" />
+</app-modal>
+<app-modal [(visible)]="isRegisterModalOpen" header="Регистрация">
+  <app-register-form (closeModal)="isRegisterModalOpen = false" />
+</app-modal>

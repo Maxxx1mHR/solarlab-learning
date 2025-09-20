@@ -1,21 +1,27 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
-import {AuthState} from '../domain/auth.state';
+import { computed, Injectable, signal } from '@angular/core';
+import { AuthState } from '../domain/auth.state';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorizationStoreService {
   private state = signal<AuthState>({
     isLoading: false,
   });
 
+  private _authToken = signal<string>('');
+
+  authToken = computed(() => this._authToken());
+
   isLoading = computed(() => this.state().isLoading);
-  
+
   setLoading(loading: boolean) {
-    this.state.update(currentState => ({
+    this.state.update((currentState) => ({
       ...currentState,
-      isLoading: loading
+      isLoading: loading,
     }));
   }
-
+  setAuthToken(token: string) {
+    this._authToken.set(token);
+  }
 }
