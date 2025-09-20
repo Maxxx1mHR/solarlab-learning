@@ -2,45 +2,43 @@
   <div class="header-top">
     <div class="container">
       <div class="header-top__buttons-wrapper">
-        <p-button
-          (click)="authorizationPopover.toggle($event)"
-          label="Войти"
-          severity="primary"
-          variant="text"
-          icon="pi pi-user"
-          class="header-top__button-login"
-        />
-        <p-button
-          label="Новое объявление"
-          icon="pi pi-plus"
-          iconPos="right"
-          class="header-top__button-add"
-        />
-        <p-popover #authorizationPopover>
-          <div class="popover-header">
-            <h4>
-              {{ authMod() === "login" ? "Авторизация" : "Регистрация" }}
-            </h4>
-            <p-button
-              icon="pi pi-times"
-              variant="text"
-              severity="secondary"
-              (onClick)="authorizationPopover.hide()"
-            />
-          </div>
-          @if (authMod() === "login") {
-            <app-login-form [popover]="authorizationPopover" />
-          } @else {
-            <app-register-form [popover]="authorizationPopover" />
-          }
-          <p-divider />
+        @if (authorizationSate.getState()) {
           <p-button
-            label="{{ authMod() === 'login' ? 'Зарегистрироваться' : 'Войти' }}"
+            (click)="popoverSettings.toggle($event)"
+            severity="primary"
             variant="text"
-            severity="secondary"
-            (onClick)="changeAuthMod()"
+            class="header-top__button-login"
+          >
+            <ng-template pTemplate>
+              <i class="pi pi-user"></i>
+              <span>{{ userStore.user()?.name }}</span>
+              <i class="pi pi-chevron-down"></i>
+            </ng-template>
+          </p-button>
+          <p-button
+            label="Новое объявление"
+            icon="pi pi-plus"
+            iconPos="right"
+            class="header-top__button-add"
           />
-        </p-popover>
+        } @else {
+          <p-button
+            (click)="isLoginModalOpen = true"
+            label="Войти"
+            severity="primary"
+            variant="text"
+            icon="pi pi-user"
+            class="header-top__button-login"
+          />
+          <p-button
+            (click)="isRegisterModalOpen = true"
+            label="Зарегистрироваться"
+            severity="primary"
+            variant="text"
+            icon="pi pi-user-plus"
+            class="header-top__button-login"
+          />
+        }
       </div>
     </div>
   </div>
@@ -76,3 +74,20 @@
     </div>
   </div>
 </header>
+<p-popover #popoverSettings>
+  <div class="popover">
+    <p-button
+      label="Выйти"
+      variant="text"
+      severity="danger"
+      (click)="onLogout()"
+    />
+  </div>
+</p-popover>
+
+<app-modal [(visible)]="isLoginModalOpen" header="Авторизация">
+  <app-login-form (closeModal)="isLoginModalOpen = false" />
+</app-modal>
+<app-modal [(visible)]="isRegisterModalOpen" header="Регистрация">
+  <app-register-form (closeModal)="isRegisterModalOpen = false" />
+</app-modal>

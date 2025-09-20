@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AuthorizationService, AuthorizationStoreService } from '@core';
 import {
   FormBuilder,
@@ -11,7 +11,6 @@ import { Message } from 'primeng/message';
 import { Password } from 'primeng/password';
 import { Button } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { Popover } from 'primeng/popover';
 
 @Component({
   selector: 'app-login-form',
@@ -26,7 +25,7 @@ export class LoginForm {
 
   isLoading = this.authorizationStoreService.isLoading;
 
-  @Input() popover!: Popover;
+  @Output() closeModal = new EventEmitter<void>();
 
   loginForm: FormGroup;
 
@@ -47,7 +46,10 @@ export class LoginForm {
 
   login() {
     this.authorizationService.login(this.loginForm.value).subscribe({
-      next: () => this.popover.hide(),
+      next: () => {
+        this.closeModal.emit();
+        this.loginForm.reset();
+      },
     });
   }
 }

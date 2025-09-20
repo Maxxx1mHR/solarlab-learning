@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { AuthorizationService, AuthorizationStoreService } from '@core';
 import {
   FormBuilder,
@@ -26,7 +26,7 @@ export class RegisterForm {
 
   isLoading = this.authorizationStoreService.isLoading;
 
-  @Input() popover!: Popover;
+  @Output() closeModal = new EventEmitter<void>();
 
   registerForm: FormGroup;
 
@@ -52,7 +52,10 @@ export class RegisterForm {
 
   register() {
     this.authorizationService.register(this.registerForm.value).subscribe({
-      next: () => this.popover.hide(),
+      next: () => {
+        this.closeModal.emit();
+        this.registerForm.reset();
+      },
     });
   }
 }

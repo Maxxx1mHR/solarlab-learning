@@ -9,6 +9,10 @@ export class AuthorizationStoreService {
     isLoading: false,
   });
 
+  private _authToken = signal<string>('');
+
+  authToken = computed(() => this._authToken());
+
   isLoading = computed(() => this.state().isLoading);
 
   setLoading(loading: boolean) {
@@ -16,5 +20,8 @@ export class AuthorizationStoreService {
       ...currentState,
       isLoading: loading,
     }));
+  }
+  setAuthToken(token: string) {
+    this._authToken.set(token);
   }
 }

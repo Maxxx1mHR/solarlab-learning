@@ -82,9 +82,9 @@ header {
   }
 }
 
-.popover-header {
+.popover {
+  width: 150px;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  justify-content: end;
 }
 
