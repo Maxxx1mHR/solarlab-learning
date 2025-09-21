@@ -48,12 +48,14 @@
         <h3>Доска объявлений</h3>
         <div class="header-bottom__wrapper">
           <p-button
+            class="header-bottom__button-category"
             label="Все категории"
             variant="outlined"
-            class="header-bottom__button-category"
+            (click)="menu.toggle($event)"
           >
             <img src="assets/icons/list-nested.svg" alt="list" />
           </p-button>
+          <p-tieredmenu #menu [model]="menuItem()" [popup]="true" />
           <div class="header-bottom__input-wrapper">
             <input
               type="text"
