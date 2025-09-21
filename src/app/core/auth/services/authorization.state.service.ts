@@ -1,16 +1,17 @@
-import {Injectable} from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorizationStateService {
-  isAuthenticated = false;
+  private _isAuth = signal(false);
+  isAuthenticated = computed(() => this._isAuth());
 
-  getState(): boolean {
-    return this.isAuthenticated
+  getState() {
+    return this._isAuth();
   }
 
   setState(state: boolean): void {
-    this.isAuthenticated = state
+    this._isAuth.set(state);
   }
 }

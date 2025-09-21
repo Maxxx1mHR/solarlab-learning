@@ -1,14 +1,22 @@
-import { Component } from '@angular/core';
-import { Product, ProductCard } from './product-card';
+import { Component, inject, model, signal, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { GalleriaModule } from 'primeng/galleria';
+import { Product } from '../main-page/products-list/product-card';
 
 @Component({
-  selector: 'app-product-list',
-  imports: [ProductCard],
-  templateUrl: './products-list.html',
-  styleUrl: './products-list.scss',
+  selector: 'app-product-detail',
+  imports: [GalleriaModule],
+  templateUrl: './product-detail.html',
+  styleUrl: './product-detail.scss',
   standalone: true,
 })
-export class ProductsList {
+export class ProductDetail implements OnInit {
+  private activatedRoute = inject(ActivatedRoute);
+
+  public id = this.activatedRoute.snapshot.params['id'];
+
+  selectedProduct = signal<Product | null>(null);
+
   products: Product[] = [
     {
       id: '1',
@@ -139,4 +147,20 @@ export class ProductsList {
       publishDate: 'Вчера 21:15',
     },
   ];
+
+  findSelectedProduct(products: Product[], selectedProductId: string) {
+    const findProduct = products.find(
+      (product) => product.id === selectedProductId,
+    );
+    if (findProduct) {
+      this.selectedProduct.set(findProduct);
+    }
+  }
+
+  ngOnInit() {
+    this.findSelectedProduct(this.products, this.id);
+    console.log(this.selectedProduct());
+  }
+
+  images = model(['assets/images/products/guitar.png']);
 }
