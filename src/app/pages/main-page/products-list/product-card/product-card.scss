@@ -9,6 +9,8 @@
   &__title {
     color: var(--primary);
     word-break: break-all;
+    text-decoration: none;
+    font: var(--h6);
   }
 
   &__price {
