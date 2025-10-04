@@ -11,7 +11,7 @@
           >
             <ng-template pTemplate>
               <i class="pi pi-user"></i>
-              <span>{{ userStore.user()?.name }}</span>
+              <span>{{ userStore.getUser()?.name }}</span>
               <i class="pi pi-chevron-down"></i>
             </ng-template>
           </p-button>
@@ -46,38 +46,39 @@
     <div class="container">
       <div class="header-bottom__content">
         <h3>Доска объявлений</h3>
-        <div class="header-bottom__wrapper">
-          <p-button
-            class="header-bottom__button-category"
-            label="Все категории"
-            variant="outlined"
-            (click)="menu.toggle($event)"
-          >
-            <img src="assets/icons/list-nested.svg" alt="list" />
-          </p-button>
-          <p-tieredmenu #menu [model]="menuItem()" [popup]="true" />
-          <div class="header-bottom__input-wrapper">
-            <input
-              type="text"
-              pInputText
-              placeholder="Поиск по объявлениям"
-              class="header-bottom__input input input_s"
-            />
-            <p-button
-              label="Найти"
-              icon="pi pi-search"
-              iconPos="right"
-              size="large"
-              class="header-bottom__button-search"
-            />
-          </div>
-        </div>
+        <!--        <div class="header-bottom__wrapper">-->
+        <!--          <p-button-->
+        <!--            class="header-bottom__button-category"-->
+        <!--            label="Все категории"-->
+        <!--            variant="outlined"-->
+        <!--            (click)="menu.toggle($event)"-->
+        <!--          >-->
+        <!--            <img src="assets/icons/list-nested.svg" alt="list" />-->
+        <!--          </p-button>-->
+        <!--          <p-tieredmenu #menu [model]="menuItem()" [popup]="true" />-->
+        <!--          <div class="header-bottom__input-wrapper">-->
+        <!--            <input-->
+        <!--              type="text"-->
+        <!--              pInputText-->
+        <!--              placeholder="Поиск по объявлениям"-->
+        <!--              class="header-bottom__input input input_s"-->
+        <!--            />-->
+        <!--            <p-button-->
+        <!--              label="Найти"-->
+        <!--              icon="pi pi-search"-->
+        <!--              iconPos="right"-->
+        <!--              size="large"-->
+        <!--              class="header-bottom__button-search"-->
+        <!--            />-->
+        <!--          </div>-->
+        <!--        </div>-->
+        <app-advert-search />
       </div>
     </div>
   </div>
 </header>
 <p-popover #popoverSettings>
-  <div class="popover">
+  <div>
     <p-button
       label="Выйти"
       variant="text"

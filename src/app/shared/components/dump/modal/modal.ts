@@ -12,4 +12,5 @@ import { Dialog } from 'primeng/dialog';
 export class Modal {
   header = input('');
   visible = model(false);
+  position = input<'top' | 'center'>('top');
 }

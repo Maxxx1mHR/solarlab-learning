@@ -3,11 +3,20 @@
     class="product-card__image"
     [src]="product.imageSrc"
     [alt]="product.title"
+    width="306"
+    height="240"
   />
-  <a routerLink="/product/{{ product.id }}" class="product-card__title">
+  <br />
+  <a
+    routerLink="/product/{{ product.id }}"
+    class="product-card__title"
+    (click)="this.onSelectProduct(product)"
+  >
     {{ product.title }}
   </a>
-  <h6 class="product-card__price">{{ product.price }} ₽</h6>
+  <h6 class="product-card__price">
+    {{ product.price | currency: "RUB" : "symbol-narrow" : "1.0-0" }}
+  </h6>
   <div class="product-card__location">{{ product.location }}</div>
   <div class="product-card__date">{{ product.publishDate }}</div>
 </div>

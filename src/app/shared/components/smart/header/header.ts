@@ -15,6 +15,7 @@ import { MenuItem } from 'primeng/api';
 import { MegaMenu } from 'primeng/megamenu';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { CategoriesService } from '../../../../entries/catergories/categories.service';
+import { AdvertSearch } from '../../../../features/advertSearch/ui/components/advert-search/advert-search';
 interface Category {
   id: string;
   parentId: string;
@@ -36,6 +37,7 @@ interface Category {
     InputGroupAddon,
     MegaMenu,
     TieredMenu,
+    AdvertSearch,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
@@ -69,17 +71,19 @@ export class Header implements OnInit {
     parentPath = '',
   ): MenuItem[] {
     return categories
-      .filter((cat) => cat.parentId === parentId)
-      .map((c) => {
-        const fullPath = parentPath ? `${parentPath} / ${c.name}` : c.name;
-        const children = this.mapCategories(categories, c.id, fullPath);
+      .filter((category) => category.parentId === parentId)
+      .map((category) => {
+        const fullPath = parentPath
+          ? `${parentPath} / ${category.name}`
+          : category.name;
+        const children = this.mapCategories(categories, category.id, fullPath);
 
         return {
-          id: c.id,
-          label: c.name,
+          id: category.id,
+          label: category.name,
           items: children.length > 0 ? children : undefined,
           fullPath,
-          command: () => this.onCategoryClick(c, fullPath),
+          command: () => this.onCategoryClick(category, fullPath),
         };
       });
   }

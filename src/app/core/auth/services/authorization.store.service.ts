@@ -22,6 +22,7 @@ export class AuthorizationStoreService {
     }));
   }
   setAuthToken(token: string) {
+    localStorage.setItem('access_token', token);
     this._authToken.set(token);
   }
 }

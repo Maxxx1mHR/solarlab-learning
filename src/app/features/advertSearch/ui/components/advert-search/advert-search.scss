@@ -1,0 +1,45 @@
+@use "mixins" as media;
+
+.search{
+  display: flex;
+  flex: 1;
+  gap: 12px;
+
+  @include media.media-mobile-sm {
+    flex-direction: column;
+  }
+
+  &__category {
+    display: flex;
+    flex: 0 0 auto;
+  }
+
+  &__input-wrapper{
+    position: relative;
+    display: flex;
+    width: 100%;
+  }
+
+  &__input {
+    flex: 1;
+    width: 100%;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  ::ng-deep &__button-search {
+    .p-button {
+      border-radius: 0 4px 4px 0;
+    }
+  }
+
+  &__error-message {
+    position: absolute;
+    left: 0;
+    top: 38px;
+  }
+}

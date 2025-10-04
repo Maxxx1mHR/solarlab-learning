@@ -8,10 +8,15 @@ export class AuthorizationStateService {
   isAuthenticated = computed(() => this._isAuth());
 
   getState() {
-    return this._isAuth();
+    const accessToken = localStorage.getItem('access_token');
+
+    // return this._isAuth();
+    return accessToken;
   }
 
   setState(state: boolean): void {
+    // const accessToken = localStorage.getItem('access_token');
+    // localStorage.setItem('AuthorizationState', JSON.stringify(state));
     this._isAuth.set(state);
   }
 }
