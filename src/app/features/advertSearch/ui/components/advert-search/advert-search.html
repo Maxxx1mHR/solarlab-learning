@@ -1,0 +1,64 @@
+<div class="search">
+  <p-button
+    class="search__category"
+    label="Все категории"
+    variant="outlined"
+    (click)="menu.toggle($event)"
+  >
+    <img src="assets/icons/list-nested.svg" alt="list" />
+  </p-button>
+  <p-tieredmenu #menu [model]="menuItem()" [popup]="true" />
+  <form
+    [formGroup]="searchForm"
+    class="search__input-wrapper"
+    (ngSubmit)="onSearch()"
+  >
+    <input
+      type="text"
+      pInputText
+      formControlName="search"
+      placeholder="Поиск по объявлениям"
+      class="search__input input input_s"
+    />
+    @if (
+      searchForm.get("search")?.invalid &&
+      (searchForm.get("search")?.touched || searchForm.get("search")?.dirty)
+    ) {
+      @if (searchForm.get("search")?.hasError("required")) {
+        <p-message
+          severity="error"
+          variant="simple"
+          size="small"
+          class="search__error-message"
+        >
+          Обязательное поле!
+        </p-message>
+      }
+    }
+    @if (!categoryId() && Boolean(searchForm.get("search")?.value)) {
+      <p-message
+        severity="error"
+        variant="simple"
+        size="small"
+        class="search__error-message"
+      >
+        Выберите категорию для поиска!
+      </p-message>
+    }
+    <p-button
+      label="Найти"
+      icon="pi pi-search"
+      iconPos="right"
+      size="large"
+      class="search__button-search"
+      type="submit"
+      [disabled]="
+        searchForm.invalid ||
+        !categoryId() ||
+        advertSearchStoreService.isLoading()
+      "
+      [loading]="advertSearchStoreService.isLoading()"
+      (click)="advertSearchStoreService.setSearched(true)"
+    />
+  </form>
+</div>

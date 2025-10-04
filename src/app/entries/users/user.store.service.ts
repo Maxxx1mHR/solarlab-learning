@@ -12,4 +12,7 @@ export class UserStoreService {
   setUser(user: User) {
     this._user.set(user);
   }
+  getUser() {
+    return JSON.parse(localStorage.getItem('user') ?? '');
+  }
 }

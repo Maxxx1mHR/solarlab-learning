@@ -11,6 +11,6 @@ export const routes: Routes = [
     title: 'Подробная информация',
     path: 'product/:id',
     canActivate: [authGuard],
-    loadComponent: () => import('@pages').then((m) => m.ProductDetail),
+    loadComponent: () => import('@pages').then((m) => m.ProductDetailPage),
   },
 ];

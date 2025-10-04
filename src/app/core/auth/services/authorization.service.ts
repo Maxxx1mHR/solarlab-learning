@@ -44,9 +44,11 @@ export class AuthorizationService {
         this.userApiService.getCurrentUser().pipe(map(mapUserDtoToUser)),
       ),
       tap((user) => {
-        this.userStoreService.setUser(user);
-        this.userApiService.getCurrentUser();
-        this.authStateService.setState(true);
+        console.log('000', user);
+        // this.userStoreService.setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userApiService.getCurrentUser(); // Удалить???
+        // this.authStateService.setState(true);
         this.messageService.add({
           severity: 'success',
           summary: 'Успешно',
@@ -66,6 +68,8 @@ export class AuthorizationService {
   }
 
   logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('access_token');
     this.authStateService.setState(false);
     this.router.navigateByUrl('/', { replaceUrl: true });
   }

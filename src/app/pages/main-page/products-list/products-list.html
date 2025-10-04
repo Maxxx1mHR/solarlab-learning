@@ -1,5 +1,8 @@
 <div class="products">
-  @for (product of products; track product) {
+  @for (
+    product of advertSearchStoreService.advertSearchResult();
+    track product
+  ) {
     <app-product-card [product]="product" />
   }
 </div>
