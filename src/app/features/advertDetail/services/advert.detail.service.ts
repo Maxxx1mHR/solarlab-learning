@@ -4,6 +4,8 @@ import { AdvertSelectedStoreService } from '@features';
 import { AdvertApiService, ImagesApiService } from '@infrastructure';
 import { mapAdvertResponseDtoToAdvertDetail } from '../adapters/advert-detail.adapter';
 import { AdvertDetailStoreService } from './advert.detail.store.service';
+import { AdvertCommentResponseDto } from '../../../infrastructure/advert/dto/advert-comments.dto';
+import { CommentNode } from '../domain/advert.comments';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +42,36 @@ export class AdvertDetailService {
       tap((result) => this.advertDetailStoreService.setAdvertDetail(result)),
       finalize(() => this.advertDetailStoreService.setLoading(false)),
     );
+  }
+
+  mapArr(
+    arr: AdvertCommentResponseDto[],
+    parentId: string | null = null,
+  ): CommentNode[] {
+    return arr
+      .filter((c) => c.parentId === parentId)
+      .map((c) => ({
+        ...c,
+        replies: this.mapArr(arr, c.id),
+      }));
+  }
+
+  getAdvertComments(id: string) {
+    this.advertDetailStoreService.setCommentsLoading(true);
+    return this.advertApiService.getAdvertComments(id).pipe(
+      map((comments) => this.mapArr(comments)),
+      tap((comment) =>
+        this.advertDetailStoreService.setAdvertComments(comment),
+      ),
+      finalize(() => this.advertDetailStoreService.setCommentsLoading(false)),
+    );
+  }
+
+  createAdvertComments(
+    id: string,
+    text: string,
+    parendId: string | null = null,
+  ) {
+    return this.advertApiService.createAdvertComments(id, text, parendId);
   }
 }

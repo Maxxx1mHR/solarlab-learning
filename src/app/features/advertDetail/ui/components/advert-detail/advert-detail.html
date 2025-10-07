@@ -74,21 +74,38 @@
       }
     </div>
   </div>
-  <app-modal
-    [(visible)]="isPhoneModalOpen"
-    header="{{ advertDetailStoreService.advertDetail()?.user?.name }}"
-    position="center"
-  >
-    <h3 class="phone-modal__phone">
-      {{ advertDetailStoreService.advertDetail()?.user?.phone || "" | phone }}
-    </h3>
-    <div class="phone-modal__content">
-      <div>Правила безопасных сделок</div>
-      <ul class="phone-modal__item">
-        <li>Храните в тайне почту, данные паспорта и банковской карты</li>
-        <li>Игнорируйте ссылки на оплату, которые присылает собеседник</li>
-        <li>Никому не говорите коды из смс и пуш-уведомлений</li>
-      </ul>
-    </div>
-  </app-modal>
 </div>
+<div>
+  <h4>Комментарии</h4>
+  <app-comment-tree
+    [nodes]="advertDetailStoreService.advertComments()"
+    [(activeEditId)]="activeEditId"
+    [(activeReplyId)]="activeReplyId"
+  />
+  <form [formGroup]="createCommentForm" (ngSubmit)="submitCreateComment()">
+    <input
+      type="text"
+      pInputText
+      placeholder="Введите комментарий"
+      formControlName="createComment"
+    />
+    <p-button icon="pi pi-send" type="submit" />
+  </form>
+</div>
+<app-modal
+  [(visible)]="isPhoneModalOpen"
+  header="{{ advertDetailStoreService.advertDetail()?.user?.name }}"
+  position="center"
+>
+  <h3 class="phone-modal__phone">
+    {{ advertDetailStoreService.advertDetail()?.user?.phone || "" | phone }}
+  </h3>
+  <div class="phone-modal__content">
+    <div>Правила безопасных сделок</div>
+    <ul class="phone-modal__item">
+      <li>Храните в тайне почту, данные паспорта и банковской карты</li>
+      <li>Игнорируйте ссылки на оплату, которые присылает собеседник</li>
+      <li>Никому не говорите коды из смс и пуш-уведомлений</li>
+    </ul>
+  </div>
+</app-modal>

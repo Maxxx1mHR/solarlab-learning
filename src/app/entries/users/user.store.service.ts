@@ -13,6 +13,7 @@ export class UserStoreService {
     this._user.set(user);
   }
   getUser() {
-    return JSON.parse(localStorage.getItem('user') ?? '');
+    // return JSON.parse(localStorage.getItem('user') ?? '');
+    return this.user();
   }
 }

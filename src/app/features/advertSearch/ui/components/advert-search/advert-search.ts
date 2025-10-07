@@ -81,6 +81,8 @@ export class AdvertSearch implements OnInit {
           : category.name;
         const children = this.mapCategories(categories, category.id, fullPath);
 
+        console.log('children', children);
+
         return {
           id: category.id,
           label: category.name,
@@ -93,7 +95,11 @@ export class AdvertSearch implements OnInit {
 
   ngOnInit() {
     this.categoriesService.getCategories().subscribe({
-      next: (categories) => this.menuItem.set(this.mapCategories(categories)),
+      next: (categories) => {
+        console.log('+++', categories);
+        console.log('res++', this.mapCategories(categories));
+        return this.menuItem.set(this.mapCategories(categories));
+      },
     });
   }
 
