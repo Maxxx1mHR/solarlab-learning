@@ -1,0 +1,87 @@
+<ul class="comments">
+  @for (node of nodes(); track node) {
+    <li class="comments__item">
+      <header class="comments__header">
+        <b class="comments__author">{{ node.user.name }}</b>
+        <time class="comments__date">{{ node.created | date: "short" }}</time>
+      </header>
+
+      @if (answerTo()) {
+        <span class="comment__reply-to">в ответ {{ answerTo() }}</span>
+      }
+
+      <div class="comments__wrapper">
+        <div class="comments__text">
+          @if (activeEditId() === node.id) {
+            <form
+              [formGroup]="editCommentForm"
+              (ngSubmit)="submitEditComment(node.id)"
+            >
+              <div class="comments__edit-input-wrapper">
+                <input type="text" pInputText formControlName="editComment" />
+                <div class="comments__actions">
+                  <p-button
+                    icon="pi pi-save"
+                    severity="success"
+                    type="submit"
+                  />
+                  <p-button
+                    icon="pi pi-times"
+                    severity="secondary"
+                    (click)="cancelEdit()"
+                  />
+                </div>
+              </div>
+            </form>
+          } @else {
+            <div class="comments__message-wrapper">
+              {{ node.text }}
+              <p-button
+                label="Ответить"
+                variant="text"
+                severity="secondary"
+                (click)="startReply(node)"
+              />
+            </div>
+
+            @if (activeReplyId() === node.id) {
+              <form
+                [formGroup]="replyCommentForm"
+                (ngSubmit)="submitReplyComment()"
+              >
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Введите комментарий"
+                  formControlName="replyComment"
+                />
+                <p-button icon="pi pi-send" type="submit" />
+                <p-button
+                  icon="pi pi-times"
+                  severity="secondary"
+                  (click)="cancelReply()"
+                />
+              </form>
+            }
+          }
+        </div>
+
+        @if (currentUserId === node.user.id && activeEditId() !== node.id) {
+          <div class="comments__actions">
+            <i class="pi pi-pencil" (click)="startEdit(node)"></i>
+            <i class="pi pi-trash" (click)="deleteComment(node.id)"></i>
+          </div>
+        }
+      </div>
+
+      @if (node.replies?.length) {
+        <app-comment-tree
+          [nodes]="node.replies"
+          [answerTo]="node.user.name"
+          [(activeEditId)]="activeEditId"
+          [(activeReplyId)]="activeReplyId"
+        />
+      }
+    </li>
+  }
+</ul>

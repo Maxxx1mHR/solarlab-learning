@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, model, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
 import { AdvertSelectedStoreService } from '../../../services/advert-selected.store.service';
 import { CurrencyPipe } from '@angular/common';
@@ -10,6 +10,15 @@ import { GalleriaModule } from 'primeng/galleria';
 import { LoginForm } from '../../../../../shared/components/smart/header/login-form/login-form';
 import { Modal } from '../../../../../shared/components/dump/modal/modal';
 import { PhonePipe } from '../../../../../shared/pipes/phone-pipe';
+import { CommentTree } from '../../../../advertComments/ui/components/comment-tree/comment-tree';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { InputText } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-advert-detail',
@@ -21,6 +30,9 @@ import { PhonePipe } from '../../../../../shared/pipes/phone-pipe';
     LoginForm,
     Modal,
     PhonePipe,
+    CommentTree,
+    InputText,
+    ReactiveFormsModule,
   ],
   templateUrl: './advert-detail.html',
   styleUrl: './advert-detail.scss',
@@ -32,9 +44,14 @@ export class AdvertDetail implements OnInit {
   advertDetailStoreService = inject(AdvertDetailStoreService);
   private activatedRoute = inject(ActivatedRoute);
 
+  activeEditId = model<string | null>(null);
+  activeReplyId = model<string | null>(null);
+
   public id = this.activatedRoute.snapshot.params['id'];
 
   isPhoneModalOpen = false;
+
+  createCommentForm: FormGroup;
 
   responsiveOptions = [
     {
@@ -46,6 +63,12 @@ export class AdvertDetail implements OnInit {
       numVisible: 1,
     },
   ];
+
+  constructor(private formBuilder: FormBuilder) {
+    this.createCommentForm = formBuilder.group({
+      createComment: new FormControl('', [Validators.required]),
+    });
+  }
 
   galleryImages = computed(() => {
     const imgs =
@@ -62,8 +85,22 @@ export class AdvertDetail implements OnInit {
     console.log('this', this.id);
     if (id) {
       this.advertDetailService.getAdvert(id).subscribe();
+      this.advertDetailService.getAdvertComments(id).subscribe();
     }
 
     console.log('-----', this.advertSelectedStoreService.advertSelected());
+  }
+
+  submitCreateComment() {
+    const advertId =
+      this.advertSelectedStoreService.advertSelected()?.id ?? this.id;
+    const comment = this.createCommentForm.get('createComment')?.value;
+    this.advertDetailService.createAdvertComments(advertId, comment).subscribe({
+      next: () => {
+        const id =
+          this.advertSelectedStoreService.advertSelected()?.id ?? this.id;
+        this.advertDetailService.getAdvertComments(id).subscribe();
+      },
+    });
   }
 }

@@ -1,0 +1,47 @@
+.comments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;
+  overflow: auto;
+
+  &__item {
+    margin: 8px 0;
+  }
+
+  &__header {
+    display: flex;
+    gap: 8px;
+    opacity: 0.8;
+    font-size: 12px;
+  }
+
+  &__text {
+    white-space: pre-wrap;
+    margin-top: 4px;
+  }
+
+  &__wrapper {
+    display: flex;
+    gap: 4px;
+  }
+  &__actions {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  &__edit-input-wrapper {
+    display: flex;
+  }
+  &__message-wrapper{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+app-comment-tree {
+  display: block;
+  margin-left: 16px;
+}
+

@@ -11,7 +11,8 @@ export function authInterceptor(
   const newReq = req.clone({
     headers: req.headers.append(
       'Authorization',
-      `Bearer ${authStoreService.authToken()}`,
+      // `Bearer ${authStoreService.authToken()}`,
+      `Bearer ${localStorage.getItem('access_token')}`,
     ),
   });
   return next(newReq);

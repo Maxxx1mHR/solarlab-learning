@@ -44,8 +44,7 @@ export class AuthorizationService {
         this.userApiService.getCurrentUser().pipe(map(mapUserDtoToUser)),
       ),
       tap((user) => {
-        console.log('000', user);
-        // this.userStoreService.setUser(user);
+        this.userStoreService.setUser(user);
         localStorage.setItem('user', JSON.stringify(user));
         this.userApiService.getCurrentUser(); // Удалить???
         // this.authStateService.setState(true);
@@ -64,6 +63,13 @@ export class AuthorizationService {
         return throwError(() => err);
       }),
       finalize(() => this.authStoreService.setLoading(false)),
+    );
+  }
+
+  currentUser() {
+    return this.userApiService.getCurrentUser().pipe(
+      map(mapUserDtoToUser),
+      tap((user) => this.userStoreService.setUser(user)),
     );
   }
 

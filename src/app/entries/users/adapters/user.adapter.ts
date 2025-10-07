@@ -5,5 +5,6 @@ export function mapUserDtoToUser(dto: UserDto): User {
   return {
     name: dto.name,
     role: dto.role,
+    userId: dto.id,
   };
 }
