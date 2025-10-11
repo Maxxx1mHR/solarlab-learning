@@ -41,15 +41,18 @@ export class AdvertService {
       switchMap((products) => {
         if (!products || products.length === 0) return of([]);
         const requests = products.map((product) =>
-          this.imagesApiService.getImages(product.imageSrc),
+          product.imageSrc
+            ? this.imagesApiService.getImages(product.imageSrc)
+            : of(null),
         );
 
         return forkJoin(requests).pipe(
-          tap((images) => console.log('!!', images)),
           map((imagesByProduct) =>
             products.map((product, index) => ({
               ...product,
-              imageSrc: URL.createObjectURL(imagesByProduct[index]),
+              imageSrc: imagesByProduct[index]
+                ? URL.createObjectURL(imagesByProduct[index])
+                : '',
             })),
           ),
         );

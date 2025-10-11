@@ -82,6 +82,5 @@ export class AuthorizationService {
 
   register(data: RegisterRequestDto) {
     return this.apiService.register(data).pipe();
-    tap((data) => console.log('>>', data));
   }
 }

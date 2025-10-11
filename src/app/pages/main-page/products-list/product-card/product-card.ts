@@ -11,14 +11,10 @@ import { AdvertSelectedStoreService } from '../../../../features/advertDetail/se
   styleUrl: './product-card.scss',
   standalone: true,
 })
-export class ProductCard implements OnInit {
+export class ProductCard {
   // @Input() product!: Product;
   advertSelectedStoreService = inject(AdvertSelectedStoreService);
   @Input() product!: Product;
-
-  ngOnInit(): void {
-    console.log(this.product);
-  }
 
   onSelectProduct(product: Product) {
     this.advertSelectedStoreService.setAdvertSelected(product);

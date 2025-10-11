@@ -13,4 +13,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('@pages').then((m) => m.ProductDetailPage),
   },
+  {
+    title: 'Новое объявление',
+    path: 'new-advert',
+    canActivate: [authGuard],
+    loadComponent: () => import('@pages').then((m) => m.NewAdverPage),
+  },
 ];

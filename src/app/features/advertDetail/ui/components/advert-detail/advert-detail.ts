@@ -81,14 +81,10 @@ export class AdvertDetail implements OnInit {
 
   ngOnInit() {
     const id = this.advertSelectedStoreService.advertSelected()?.id ?? this.id;
-    console.log('!!', id);
-    console.log('this', this.id);
     if (id) {
       this.advertDetailService.getAdvert(id).subscribe();
       this.advertDetailService.getAdvertComments(id).subscribe();
     }
-
-    console.log('-----', this.advertSelectedStoreService.advertSelected());
   }
 
   submitCreateComment() {

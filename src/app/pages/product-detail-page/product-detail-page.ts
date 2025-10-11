@@ -11,7 +11,7 @@ import { AdvertDetail } from '../../features/advertDetail/ui/components/advert-d
   styleUrl: './product-detail-page.scss',
   standalone: true,
 })
-export class ProductDetailPage implements OnInit {
+export class ProductDetailPage {
   private activatedRoute = inject(ActivatedRoute);
 
   public id = this.activatedRoute.snapshot.params['id'];
@@ -156,11 +156,6 @@ export class ProductDetailPage implements OnInit {
     if (findProduct) {
       this.selectedProduct.set(findProduct);
     }
-  }
-
-  ngOnInit() {
-    // this.findSelectedProduct(this.products, this.id);
-    console.log(this.selectedProduct());
   }
 
   images = model(['assets/images/products/guitar.png']);

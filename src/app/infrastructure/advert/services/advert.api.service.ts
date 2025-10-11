@@ -4,6 +4,10 @@ import { environment } from '@environments';
 import { AdvertSearchRequestDto, AdvertSearchResponseDto } from '../dto';
 import { GetAdvertResponseDto } from '../dto/advert-get-by-id.dto';
 import { AdvertCommentResponseDto } from '../dto/advert-comments.dto';
+import {
+  AdvertCreateRequestDto,
+  AdvertCreateResponseDto,
+} from '../dto/advert-create.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -34,9 +38,13 @@ export class AdvertApiService {
     parentId: string | null = null,
   ) {
     const formData = new FormData();
-    formData.append('Text', text);
-    formData.append('ParentId', parentId ?? '');
+    formData.append('text', text);
+    formData.append('parentId', parentId ?? '');
 
     return this.http.post(`${this.base}/advert/${id}/comments`, formData);
+  }
+
+  createAdvert(data: FormData) {
+    return this.http.post<AdvertCreateResponseDto>(`${this.base}/advert`, data);
   }
 }

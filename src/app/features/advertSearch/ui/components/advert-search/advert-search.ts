@@ -2,7 +2,10 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { AdvertService } from '../../../services/advert.service';
 import { MenuItem } from 'primeng/api';
 import { Category } from '../../../../../infrastructure/categories/dto';
-import { CategoriesService } from '../../../../../entries/catergories/categories.service';
+import {
+  CategoriesService,
+  CategoryNode,
+} from '../../../../../entries/catergories/categories.service';
 import { Button } from 'primeng/button';
 import { PopoverModule } from 'primeng/popover';
 import { TieredMenu } from 'primeng/tieredmenu';
@@ -16,6 +19,17 @@ import {
 } from '@angular/forms';
 import { Message } from 'primeng/message';
 import { AdvertSearchStoreService } from '../../../services/advert-search.store.service';
+import { CategoriesStoreService } from '../../../../../entries/catergories/categories.store.service';
+import { CascadeSelect } from 'primeng/cascadeselect';
+
+interface Test {
+  name: string;
+  code: string;
+  states: {
+    name: string;
+    cities: { cname: string; code: string }[];
+  }[];
+}
 
 @Component({
   selector: 'app-advert-search',
@@ -26,6 +40,7 @@ import { AdvertSearchStoreService } from '../../../services/advert-search.store.
     FormsModule,
     ReactiveFormsModule,
     Message,
+    CascadeSelect,
   ],
   templateUrl: './advert-search.html',
   styleUrl: './advert-search.scss',
@@ -33,6 +48,7 @@ import { AdvertSearchStoreService } from '../../../services/advert-search.store.
 })
 export class AdvertSearch implements OnInit {
   private advertService = inject(AdvertService);
+  categoriesStoreService = inject(CategoriesStoreService);
   advertSearchStoreService = inject(AdvertSearchStoreService);
   categoriesService = inject(CategoriesService);
   menuItem = signal<MenuItem[]>([]);
@@ -61,46 +77,61 @@ export class AdvertSearch implements OnInit {
 
   items: MenuItem[] | undefined;
 
-  onCategoryClick(category: Category, fullPath: string) {
-    console.log(this.menuItem());
-    console.log('Выбрана категория:', category);
-    console.log('fullPath:', fullPath);
-    this.categoryId.set(category.id);
+  // onCategoryClick(category: Category, fullPath: string) {
+  //   console.log(this.menuItem());
+  //   console.log('Выбрана категория:', category);
+  //   console.log('fullPath:', fullPath);
+  //   this.categoryId.set(category.id);
+  // }
+  //
+  // mapCategories(
+  //   categories: Category[],
+  //   parentId = '00000000-0000-0000-0000-000000000000',
+  //   parentPath = '',
+  // ): MenuItem[] {
+  //   return categories
+  //     .filter((category) => category.parentId === parentId)
+  //     .map((category) => {
+  //       const fullPath = parentPath
+  //         ? `${parentPath} / ${category.name}`
+  //         : category.name;
+  //       const children = this.mapCategories(categories, category.id, fullPath);
+  //
+  //       console.log('children', children);
+  //
+  //       return {
+  //         id: category.id,
+  //         label: category.name,
+  //         items: children.length > 0 ? children : undefined,
+  //         fullPath,
+  //         command: () => this.onCategoryClick(category, fullPath),
+  //       };
+  //     });
+  // }
+
+  onCategoryChange(e: any) {
+    const node = e?.value as CategoryNode | undefined;
+    this.categoryId.set(node?.value ?? '');
   }
 
-  mapCategories(
-    categories: Category[],
-    parentId = '00000000-0000-0000-0000-000000000000',
-    parentPath = '',
-  ): MenuItem[] {
-    return categories
-      .filter((category) => category.parentId === parentId)
-      .map((category) => {
-        const fullPath = parentPath
-          ? `${parentPath} / ${category.name}`
-          : category.name;
-        const children = this.mapCategories(categories, category.id, fullPath);
+  // countries: Test[] = [];
 
-        console.log('children', children);
+  selectedCategory: any;
 
-        return {
-          id: category.id,
-          label: category.name,
-          items: children.length > 0 ? children : undefined,
-          fullPath,
-          command: () => this.onCategoryClick(category, fullPath),
-        };
-      });
+  onCategorySelected(e: any) {
+    // console.log('selectedCategory via event:', e.value);
+    // если нужен id:
+    // console.log('categoryId:', e.value?.value);
+
+    this.categoryId.set(e.value?.value);
+  }
+
+  Categories() {
+    return this.categoriesStoreService.getCategories() as any;
   }
 
   ngOnInit() {
-    this.categoriesService.getCategories().subscribe({
-      next: (categories) => {
-        console.log('+++', categories);
-        console.log('res++', this.mapCategories(categories));
-        return this.menuItem.set(this.mapCategories(categories));
-      },
-    });
+    this.categoriesService.getCategories().subscribe();
   }
 
   protected readonly Boolean = Boolean;
