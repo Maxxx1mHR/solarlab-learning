@@ -1,13 +1,40 @@
 <div class="search">
-  <p-button
-    class="search__category"
-    label="Все категории"
-    variant="outlined"
-    (click)="menu.toggle($event)"
-  >
-    <img src="assets/icons/list-nested.svg" alt="list" />
-  </p-button>
-  <p-tieredmenu #menu [model]="menuItem()" [popup]="true" />
+  <!--  <p-button-->
+  <!--    class="search__category"-->
+  <!--    label="Все категории"-->
+  <!--    variant="outlined"-->
+  <!--    (click)="menu.toggle($event)"-->
+  <!--  >-->
+  <!--    <img src="assets/icons/list-nested.svg" alt="list" />-->
+  <!--  </p-button>-->
+  <!--  <p-tieredmenu #menu [model]="menuItem()" [popup]="true" />-->
+
+  <!--  <p-tieredmenu-->
+  <!--    #menu-->
+  <!--    [model]="categoriesStoreService.getCategories()"-->
+  <!--    [popup]="true"-->
+  <!--  />-->
+
+  <div class="card flex justify-center">
+    <p-cascadeselect
+      [options]="Categories()"
+      optionLabel="label"
+      optionGroupLabel="label"
+      [optionGroupChildren]="['items']"
+      [style]="{ minWidth: '14rem' }"
+      placeholder="Выберите категорию"
+      [(ngModel)]="selectedCategory"
+      (onChange)="onCategorySelected($event)"
+      size="large"
+    />
+  </div>
+  <!--  <p-cascadeselect-->
+  <!--    [options]="countries"-->
+  <!--    optionLabel="cname"-->
+  <!--    optionGroupLabel="name"-->
+  <!--    [optionGroupChildren]="['states', 'cities']"-->
+  <!--  />-->
+
   <form
     [formGroup]="searchForm"
     class="search__input-wrapper"

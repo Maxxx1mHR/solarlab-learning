@@ -16,6 +16,7 @@ import { MegaMenu } from 'primeng/megamenu';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { CategoriesService } from '../../../../entries/catergories/categories.service';
 import { AdvertSearch } from '../../../../features/advertSearch/ui/components/advert-search/advert-search';
+import { RouterLink } from '@angular/router';
 interface Category {
   id: string;
   parentId: string;
@@ -38,15 +39,16 @@ interface Category {
     MegaMenu,
     TieredMenu,
     AdvertSearch,
+    RouterLink,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   standalone: true,
 })
-export class Header implements OnInit {
+export class Header {
   @ViewChild('popoverSettings') popoverSettings!: Popover;
   authMod = signal<'login' | 'register'>('login');
-  menuItem = signal<MenuItem[]>([]);
+  // menuItem = signal<MenuItem[]>([]);
 
   authorizationSate = inject(AuthorizationStateService);
   authorizationService = inject(AuthorizationService);
@@ -59,40 +61,40 @@ export class Header implements OnInit {
 
   items: MenuItem[] | undefined;
 
-  onCategoryClick(category: Category, fullPath: string) {
-    console.log(this.menuItem());
-    console.log('Выбрана категория:', category);
-    console.log('fullPath:', fullPath);
-  }
+  // onCategoryClick(category: Category, fullPath: string) {
+  //   console.log(this.menuItem());
+  //   console.log('Выбрана категория:', category);
+  //   console.log('fullPath:', fullPath);
+  // }
 
-  mapCategories(
-    categories: Category[],
-    parentId = '00000000-0000-0000-0000-000000000000',
-    parentPath = '',
-  ): MenuItem[] {
-    return categories
-      .filter((category) => category.parentId === parentId)
-      .map((category) => {
-        const fullPath = parentPath
-          ? `${parentPath} / ${category.name}`
-          : category.name;
-        const children = this.mapCategories(categories, category.id, fullPath);
+  // mapCategories(
+  //   categories: Category[],
+  //   parentId = '00000000-0000-0000-0000-000000000000',
+  //   parentPath = '',
+  // ): MenuItem[] {
+  //   return categories
+  //     .filter((category) => category.parentId === parentId)
+  //     .map((category) => {
+  //       const fullPath = parentPath
+  //         ? `${parentPath} / ${category.name}`
+  //         : category.name;
+  //       const children = this.mapCategories(categories, category.id, fullPath);
+  //
+  //       return {
+  //         id: category.id,
+  //         label: category.name,
+  //         items: children.length > 0 ? children : undefined,
+  //         fullPath,
+  //         command: () => this.onCategoryClick(category, fullPath),
+  //       };
+  //     });
+  // }
 
-        return {
-          id: category.id,
-          label: category.name,
-          items: children.length > 0 ? children : undefined,
-          fullPath,
-          command: () => this.onCategoryClick(category, fullPath),
-        };
-      });
-  }
-
-  ngOnInit() {
-    this.categoriesService.getCategories().subscribe({
-      next: (categories) => this.menuItem.set(this.mapCategories(categories)),
-    });
-  }
+  // ngOnInit() {
+  //   this.categoriesService.getCategories().subscribe({
+  //     next: (categories) => this.menuItem.set(this.mapCategories(categories)),
+  //   });
+  // }
   changeAuthMod() {
     this.authMod.update((value) => (value === 'login' ? 'register' : 'login'));
   }
