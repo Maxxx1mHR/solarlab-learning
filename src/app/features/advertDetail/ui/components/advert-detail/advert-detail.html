@@ -1,111 +1,123 @@
-<div class="advert-detail">
-  <div class="advert-detail__block">
-    @if (advertDetailStoreService.isLoading()) {
-      <p-skeleton width="300px" class="mb-2" />
-      <br />
-      <p-skeleton width="300px" height="300px" class="mr-2" />
-    } @else {
-      <div>
-        <h3 class="advert-detail__title">
-          {{ advertDetailStoreService.advertDetail()?.advert?.title }}
-        </h3>
-        <div>
-          <p-galleria
-            [value]="galleryImages()"
-            [responsiveOptions]="responsiveOptions"
-            [containerStyle]="{ 'width: 100%, max-width': '856px' }"
-            [numVisible]="5"
-            [showThumbnails]="galleryImages().length > 1"
-          >
-            <ng-template #item let-item>
-              <img [src]="item.itemImageSrc" style="width: 100%" />
-            </ng-template>
-            <ng-template #thumbnail let-item>
-              <img
-                [src]="item.thumbnailImageSrc"
-                style="width: 112px; height: 84px"
-              />
-            </ng-template>
-          </p-galleria>
-        </div>
-      </div>
-    }
+@if (
+  userId === this.advertDetailStoreService.advertDetail()?.user?.createdById
+) {
+  <div>
+    <p-button label="Удалить" severity="danger" (click)="deleteAdvert()" />
+    <p-button label="Редактировать" severity="info" (click)="isEdit = true" />
   </div>
-  <div class="advert-detail__description">
-    @if (advertDetailStoreService.isLoading()) {
-      <p-skeleton width="300px" class="mb-2" />
-      <br />
-    } @else {
-      <h3 class="advert-detail__price">
-        {{
-          advertDetailStoreService.advertDetail()?.advert?.price
-            | currency: "RUB" : "symbol-narrow" : "1.0-0"
-        }}
-      </h3>
-    }
-    <p-button
-      label="Показать номер телефона"
-      icon="pi pi-phone"
-      size="large"
-      [disabled]="advertDetailStoreService.isLoading()"
-      class="advert-detail__phone-button"
-      (click)="isPhoneModalOpen = true"
-    />
-    <div class="advert-detail__address-block">
-      <h4>Адрес</h4>
+}
+@if (isEdit) {
+  <app-advert-create-form [isEdit]="true" />
+} @else {
+  <div class="advert-detail">
+    <div class="advert-detail__block">
       @if (advertDetailStoreService.isLoading()) {
-        <p-skeleton width="10rem" class="mb-2" />
+        <p-skeleton width="300px" class="mb-2" />
+        <br />
+        <p-skeleton width="300px" height="300px" class="mr-2" />
       } @else {
         <div>
-          <div class="advert-detail__address-description">
-            {{ advertDetailStoreService.advertDetail()?.advert?.location }}
+          <h3 class="advert-detail__title">
+            {{ advertDetailStoreService.advertDetail()?.advert?.title }}
+          </h3>
+          <div>
+            <p-galleria
+              [value]="galleryImages()"
+              [responsiveOptions]="responsiveOptions"
+              [containerStyle]="{ 'width: 100%, max-width': '856px' }"
+              [numVisible]="5"
+              [showThumbnails]="galleryImages().length > 1"
+            >
+              <ng-template #item let-item>
+                <img [src]="item.itemImageSrc" style="width: 100%" />
+              </ng-template>
+              <ng-template #thumbnail let-item>
+                <img
+                  [src]="item.thumbnailImageSrc"
+                  style="width: 112px; height: 84px"
+                />
+              </ng-template>
+            </p-galleria>
           </div>
         </div>
       }
     </div>
-    <div class="advert-detail__description-block">
-      <h4>Описание</h4>
+    <div class="advert-detail__description">
       @if (advertDetailStoreService.isLoading()) {
-        <p-skeleton width="10rem" class="mb-2" />
+        <p-skeleton width="300px" class="mb-2" />
+        <br />
       } @else {
-        <div class="advert-detail__description-text">
-          {{ advertDetailStoreService.advertDetail()?.advert?.description }}
-        </div>
+        <h3 class="advert-detail__price">
+          {{
+            advertDetailStoreService.advertDetail()?.advert?.price
+              | currency: "RUB" : "symbol-narrow" : "1.0-0"
+          }}
+        </h3>
       }
+      <p-button
+        label="Показать номер телефона"
+        icon="pi pi-phone"
+        size="large"
+        [disabled]="advertDetailStoreService.isLoading()"
+        class="advert-detail__phone-button"
+        (click)="isPhoneModalOpen = true"
+      />
+      <div class="advert-detail__address-block">
+        <h4>Адрес</h4>
+        @if (advertDetailStoreService.isLoading()) {
+          <p-skeleton width="10rem" class="mb-2" />
+        } @else {
+          <div>
+            <div class="advert-detail__address-description">
+              {{ advertDetailStoreService.advertDetail()?.advert?.location }}
+            </div>
+          </div>
+        }
+      </div>
+      <div class="advert-detail__description-block">
+        <h4>Описание</h4>
+        @if (advertDetailStoreService.isLoading()) {
+          <p-skeleton width="10rem" class="mb-2" />
+        } @else {
+          <div class="advert-detail__description-text">
+            {{ advertDetailStoreService.advertDetail()?.advert?.description }}
+          </div>
+        }
+      </div>
     </div>
   </div>
-</div>
-<div>
-  <h4>Комментарии</h4>
-  <app-comment-tree
-    [nodes]="advertDetailStoreService.advertComments()"
-    [(activeEditId)]="activeEditId"
-    [(activeReplyId)]="activeReplyId"
-  />
-  <form [formGroup]="createCommentForm" (ngSubmit)="submitCreateComment()">
-    <input
-      type="text"
-      pInputText
-      placeholder="Введите комментарий"
-      formControlName="createComment"
+  <div>
+    <h4>Комментарии</h4>
+    <app-comment-tree
+      [nodes]="advertDetailStoreService.advertComments()"
+      [(activeEditId)]="activeEditId"
+      [(activeReplyId)]="activeReplyId"
     />
-    <p-button icon="pi pi-send" type="submit" />
-  </form>
-</div>
-<app-modal
-  [(visible)]="isPhoneModalOpen"
-  header="{{ advertDetailStoreService.advertDetail()?.user?.name }}"
-  position="center"
->
-  <h3 class="phone-modal__phone">
-    {{ advertDetailStoreService.advertDetail()?.user?.phone || "" | phone }}
-  </h3>
-  <div class="phone-modal__content">
-    <div>Правила безопасных сделок</div>
-    <ul class="phone-modal__item">
-      <li>Храните в тайне почту, данные паспорта и банковской карты</li>
-      <li>Игнорируйте ссылки на оплату, которые присылает собеседник</li>
-      <li>Никому не говорите коды из смс и пуш-уведомлений</li>
-    </ul>
+    <form [formGroup]="createCommentForm" (ngSubmit)="submitCreateComment()">
+      <input
+        type="text"
+        pInputText
+        placeholder="Введите комментарий"
+        formControlName="createComment"
+      />
+      <p-button icon="pi pi-send" type="submit" />
+    </form>
   </div>
-</app-modal>
+  <app-modal
+    [(visible)]="isPhoneModalOpen"
+    header="{{ advertDetailStoreService.advertDetail()?.user?.name }}"
+    position="center"
+  >
+    <h3 class="phone-modal__phone">
+      {{ advertDetailStoreService.advertDetail()?.user?.phone || "" | phone }}
+    </h3>
+    <div class="phone-modal__content">
+      <div>Правила безопасных сделок</div>
+      <ul class="phone-modal__item">
+        <li>Храните в тайне почту, данные паспорта и банковской карты</li>
+        <li>Игнорируйте ссылки на оплату, которые присылает собеседник</li>
+        <li>Никому не говорите коды из смс и пуш-уведомлений</li>
+      </ul>
+    </div>
+  </app-modal>
+}

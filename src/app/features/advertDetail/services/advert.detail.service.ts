@@ -6,6 +6,7 @@ import { mapAdvertResponseDtoToAdvertDetail } from '../adapters/advert-detail.ad
 import { AdvertDetailStoreService } from './advert.detail.store.service';
 import { AdvertCommentResponseDto } from '../../../infrastructure/advert/dto/advert-comments.dto';
 import { CommentNode } from '../domain/advert.comments';
+import { Images } from '../domain/advert.detail';
 
 @Injectable({
   providedIn: 'root',
@@ -23,14 +24,21 @@ export class AdvertDetailService {
       map((advertDto) => mapAdvertResponseDtoToAdvertDetail(advertDto)),
       switchMap((advert) => {
         const request = advert.advert.imageSrc.map((img) =>
-          this.imagesApiService.getImages(img),
+          this.imagesApiService.getImages(img.src),
         );
 
         if (advert.advert.imageSrc.length) {
           console.log(advert.advert.imageSrc);
           return forkJoin(request).pipe(
             map((response) => {
-              const images = response.map((img) => URL.createObjectURL(img));
+              // const images = response.map((img) => URL.createObjectURL(img));
+              const images = response.map(
+                (img, index): Images => ({
+                  src: URL.createObjectURL(img),
+                  id: advert.advert.imageSrc[index].id,
+                }),
+              );
+
               return {
                 ...advert,
                 advert: {
@@ -45,7 +53,12 @@ export class AdvertDetailService {
             ...advert,
             advert: {
               ...advert.advert,
-              imageSrc: ['assets/images/no-image.png'],
+              imageSrc: [
+                {
+                  src: 'assets/images/no-image.png',
+                  id: '',
+                },
+              ] as Images[],
             },
           });
         }

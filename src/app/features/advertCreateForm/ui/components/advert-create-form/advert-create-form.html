@@ -1,4 +1,7 @@
-<form [formGroup]="advertForm" (ngSubmit)="advertSubmit()">
+<form
+  [formGroup]="isEdit() ? updateAdvertForm : advertForm"
+  (ngSubmit)="isEdit() ? advertUpdate() : advertSubmit()"
+>
   <div class="field">
     <label for="categoryId">
       Выберите категорию <span class="field_required">*</span>
@@ -11,7 +14,6 @@
       [optionGroupChildren]="['items']"
       [style]="{ minWidth: '14rem' }"
       placeholder="Нажмите, чтобы выбрать"
-      [(ngModel)]="selectedCategory"
       formControlName="categoryId"
       class="field__caregory"
     />
@@ -45,13 +47,6 @@
     <label for="location">
       Адрес (место проведения сделки) <span class="field_required">*</span>
     </label>
-    <!--    <input-->
-    <!--      id="location"-->
-    <!--      type="text"-->
-    <!--      pInputText-->
-    <!--      formControlName="location"-->
-    <!--      placeholder="Начните вводить адрес"-->
-    <!--    />-->
     <p-autocomplete
       formControlName="location"
       (completeMethod)="search($event)"
@@ -59,6 +54,14 @@
       placeholder="Начните вводить адрес"
     />
   </div>
+
+  <!--  <div class="existing-grid">-->
+  <!--    @for (let it of existingImages, index; track it) {-->
+  <!--      <img [src]="it.previewUrl" alt="" />-->
+  <!--      <button pButton size="small" icon="pi pi-times" (click)="removeExisting(i)"></button>-->
+  <!--    }-->
+
+  <!--  </div>-->
 
   <div class="field__image">
     <p-fileupload
@@ -79,6 +82,20 @@
     />
     <div>Максимум 10 картинок в формате jpeg, png или heic</div>
   </div>
+  <div>
+    @for (img of images; track img.id) {
+      @if (img.id) {
+        <div class="field__exist-image-wrapper">
+          <img width="100" height="100" [src]="img.src" alt="Картинка" />
+          <p-button
+            icon="pi pi-times"
+            severity="danger"
+            (click)="deleteImage(img.id)"
+          />
+        </div>
+      }
+    }
+  </div>
 
   <div class="field">
     <label for="cost"> Цена <span class="field_required">*</span> </label>
@@ -97,7 +114,7 @@
       id="email"
       formControlName="email"
       pInputText
-      placeholder="Ввидети адрес электронной почты"
+      placeholder="Введите адрес электронной почты"
     />
   </div>
   <div class="field">
@@ -112,5 +129,8 @@
     />
   </div>
 
-  <p-button label="Разместить объявление" type="submit" />
+  <p-button
+    [label]="isEdit() ? 'Обновить объявление' : 'Разместить объявление'"
+    type="submit"
+  />
 </form>

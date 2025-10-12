@@ -43,6 +43,11 @@ form {
       align-items: center;
     }
   }
+  &__exist-image-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   &_required {
     color: var(--danger-500);

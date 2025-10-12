@@ -3,12 +3,24 @@ export interface AdvertDetail {
     name: string;
     email: string;
     phone: string;
+    createdById: string; // id пользователя, который создал объвление
   };
   advert: {
+    id: string; // id объявления
     title: string;
     description: string;
     location: string;
     price: string;
-    imageSrc: string[];
+    imageSrc: Images[];
+    // imagesIds: string[];
+    category: {
+      id: string;
+      name: string;
+    };
   };
+}
+
+export interface Images {
+  src: string;
+  id: string;
 }

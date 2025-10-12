@@ -22,8 +22,20 @@ export class AdvertApiService {
       data,
     );
   }
+  createAdvert(data: FormData) {
+    return this.http.post<AdvertCreateResponseDto>(`${this.base}/advert`, data);
+  }
+
   getAdvert(id: string) {
     return this.http.get<GetAdvertResponseDto>(`${this.base}/advert/${id}`);
+  }
+
+  deleteAdvert(id: string) {
+    return this.http.delete(`${this.base}/advert/${id}`);
+  }
+
+  updateAdvert(id: string, data: FormData) {
+    return this.http.put(`${this.base}/advert/${id}`, data);
   }
 
   getAdvertComments(id: string) {
@@ -43,9 +55,5 @@ export class AdvertApiService {
     formData.append('parentId', parentId ?? '');
 
     return this.http.post(`${this.base}/advert/${id}/comments`, formData);
-  }
-
-  createAdvert(data: FormData) {
-    return this.http.post<AdvertCreateResponseDto>(`${this.base}/advert`, data);
   }
 }

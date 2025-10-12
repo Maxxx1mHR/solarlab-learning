@@ -3,6 +3,7 @@ import { Product } from './product-card.types';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { AdvertSelectedStoreService } from '../../../../features/advertDetail/services/advert-selected.store.service';
+import { UserStoreService } from '../../../../entries/users/user.store.service';
 
 @Component({
   selector: 'app-product-card',

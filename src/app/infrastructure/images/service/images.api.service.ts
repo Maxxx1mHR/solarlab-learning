@@ -16,4 +16,8 @@ export class ImagesApiService {
       responseType: 'blob',
     });
   }
+
+  deleteImages(id: string) {
+    return this.http.delete(`${this.base}/images/${id}`);
+  }
 }
