@@ -37,6 +37,7 @@ export class AdvertApiService {
     text: string,
     parentId: string | null = null,
   ) {
+    //  TODO Вынести formData на уровень выше
     const formData = new FormData();
     formData.append('text', text);
     formData.append('parentId', parentId ?? '');

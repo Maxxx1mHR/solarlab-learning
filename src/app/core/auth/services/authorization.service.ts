@@ -10,6 +10,7 @@ import {
   map,
   of,
   switchMap,
+  take,
   tap,
   throwError,
 } from 'rxjs';
@@ -67,10 +68,13 @@ export class AuthorizationService {
   }
 
   currentUser() {
-    return this.userApiService.getCurrentUser().pipe(
-      map(mapUserDtoToUser),
-      tap((user) => this.userStoreService.setUser(user)),
-    );
+    if (this.authStateService.getState()) {
+      return this?.userApiService?.getCurrentUser()?.pipe(
+        map(mapUserDtoToUser),
+        tap((user) => this.userStoreService.setUser(user)),
+      );
+    }
+    return null;
   }
 
   logout() {

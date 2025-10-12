@@ -6,5 +6,6 @@ export function mapUserDtoToUser(dto: UserDto): User {
     name: dto.name,
     role: dto.role,
     userId: dto.id,
+    adverts: dto.adverts,
   };
 }

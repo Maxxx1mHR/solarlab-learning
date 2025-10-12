@@ -17,6 +17,6 @@ export class App implements OnInit {
   authService = inject(AuthorizationService);
 
   ngOnInit() {
-    this.authService.currentUser().subscribe();
+    // this.authService.currentUser().subscribe();
   }
 }

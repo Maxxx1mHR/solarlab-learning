@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { finalize, forkJoin, map, switchMap, tap } from 'rxjs';
+import { finalize, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { AdvertSelectedStoreService } from '@features';
 import { AdvertApiService, ImagesApiService } from '@infrastructure';
 import { mapAdvertResponseDtoToAdvertDetail } from '../adapters/advert-detail.adapter';
@@ -26,20 +26,34 @@ export class AdvertDetailService {
           this.imagesApiService.getImages(img),
         );
 
-        return forkJoin(request).pipe(
-          map((response) => {
-            const images = response.map((img) => URL.createObjectURL(img));
-            return {
-              ...advert,
-              advert: {
-                ...advert.advert,
-                imageSrc: images,
-              },
-            };
-          }),
-        );
+        if (advert.advert.imageSrc.length) {
+          console.log(advert.advert.imageSrc);
+          return forkJoin(request).pipe(
+            map((response) => {
+              const images = response.map((img) => URL.createObjectURL(img));
+              return {
+                ...advert,
+                advert: {
+                  ...advert.advert,
+                  imageSrc: images,
+                },
+              };
+            }),
+          );
+        } else {
+          return of({
+            ...advert,
+            advert: {
+              ...advert.advert,
+              imageSrc: ['assets/images/no-image.png'],
+            },
+          });
+        }
       }),
-      tap((result) => this.advertDetailStoreService.setAdvertDetail(result)),
+      tap((result) => {
+        console.log('???', result);
+        this.advertDetailStoreService.setAdvertDetail(result);
+      }),
       finalize(() => this.advertDetailStoreService.setLoading(false)),
     );
   }

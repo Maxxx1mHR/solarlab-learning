@@ -1,4 +1,5 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
@@ -12,13 +13,23 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { AuthorizationService } from '@core';
+import { firstValueFrom } from 'rxjs';
+
+// function initAuth(auth: AuthorizationService) {
+//   return () => firstValueFrom(auth.currentUser());
+// }
+
+function initAuth(auth: AuthorizationService) {
+  return () => auth.currentUser(); // уже с take(1)
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
+    // provideHttpClient(),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
@@ -27,5 +38,11 @@ export const appConfig: ApplicationConfig = {
     }),
     provideHttpClient(withInterceptors([authInterceptor])),
     MessageService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initAuth,
+      deps: [AuthorizationService],
+      multi: true,
+    },
   ],
 };

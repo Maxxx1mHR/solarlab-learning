@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments';
 import { UserDto } from '../dto/user.dto';
-
 @Injectable({
   providedIn: 'root',
 })
