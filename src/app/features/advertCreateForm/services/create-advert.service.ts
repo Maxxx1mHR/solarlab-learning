@@ -6,10 +6,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { AvertCreateForm } from '../domain/create-advert';
-import { AdvertApiService } from '@infrastructure';
+import { AdvertApiService, ImagesApiService } from '@infrastructure';
 import { AdvertCreateRequestDto } from '../../../infrastructure/advert/dto/advert-create.dto';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { forkJoin, tap } from 'rxjs';
+import { AdvertDetailService } from '../../advertDetail/services/advert.detail.service';
+import { Images } from '../../advertDetail/domain/advert.detail';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +19,9 @@ import { tap } from 'rxjs';
 export class CreateAdvertService {
   private advertApiService = inject(AdvertApiService);
   private router = inject(Router);
+
+  // TODO вынетси в отдельный сервис
+  private imagesApiService = inject(ImagesApiService);
 
   createAdvert(data: AdvertCreateRequestDto) {
     const formData = new FormData();
@@ -35,5 +40,15 @@ export class CreateAdvertService {
           this.router.navigate([`/product/${advertResponse.id}`]),
         ),
       );
+  }
+
+  getEditAdvertImages(advertIds: Images[]) {
+    const request = advertIds.map((advertId) =>
+      this.imagesApiService.getImages(advertId.src),
+    );
+
+    return forkJoin(request).pipe(
+      tap((advertResponse) => console.log('Тест', advertResponse)),
+    );
   }
 }

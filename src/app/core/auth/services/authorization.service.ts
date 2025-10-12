@@ -74,7 +74,7 @@ export class AuthorizationService {
         tap((user) => this.userStoreService.setUser(user)),
       );
     }
-    return null;
+    return of(null);
   }
 
   logout() {
