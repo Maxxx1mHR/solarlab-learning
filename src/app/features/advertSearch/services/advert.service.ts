@@ -52,7 +52,7 @@ export class AdvertService {
               ...product,
               imageSrc: imagesByProduct[index]
                 ? URL.createObjectURL(imagesByProduct[index])
-                : '',
+                : 'assets/images/no-image.png',
             })),
           ),
         );

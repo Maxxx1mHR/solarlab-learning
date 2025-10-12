@@ -42,43 +42,11 @@ header {
         flex-direction: column;
       }
     }
-
-    //&__wrapper {
-    //  display: flex;
-    //  flex: 1;
-    //  gap: 12px;
-    //
-    //  @include media.media-mobile {
-    //    flex-direction: column;
-    //  }
-    //}
-    //
-    //&__button-category {
-    //  display: flex;
-    //  flex: 0 0 auto;
-    //}
-    //
-    //&__input-wrapper {
-    //  display: flex;
-    //  width: 100%;
-    //}
-
-    //&__input {
-    //  flex: 1;
-    //  width: 100%;
-    //  border-radius: 4px 0 0 4px;
-    //  border-right: none;
-    //
-    //  &:focus {
-    //    outline: none;
-    //  }
-    //}
-
-    //::ng-deep &__button-search {
-    //  .p-button {
-    //    border-radius: 0 4px 4px 0;
-    //  }
-    //}
   }
+}
+
+.popover {
+  display: flex;
+  flex-direction: column;
 }
 

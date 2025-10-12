@@ -1,0 +1,5 @@
+<div class="adverts">
+  @for (product of this.advertStoreService.getAdverts(); track product) {
+    <app-product-card [product]="product" />
+  }
+</div>
