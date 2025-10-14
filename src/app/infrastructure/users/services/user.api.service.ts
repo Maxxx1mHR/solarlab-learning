@@ -1,7 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments';
-import { UserDto } from '../dto/user.dto';
+import {
+  UpdateUserDtoRequest,
+  UpdateUserDtoResponse,
+  UserDto,
+} from '../dto/user.dto';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,5 +15,12 @@ export class UserApiService {
 
   getCurrentUser() {
     return this.http.get<UserDto>(`${this.base}/users/current`);
+  }
+
+  updateUser(id: string, user: FormData) {
+    return this.http.put<UpdateUserDtoResponse>(
+      `${this.base}/users/${id}`,
+      user,
+    );
   }
 }
