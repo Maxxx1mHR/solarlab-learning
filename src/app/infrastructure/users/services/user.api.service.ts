@@ -5,6 +5,7 @@ import {
   UpdateUserDtoRequest,
   UpdateUserDtoResponse,
   UserDto,
+  UsersResponseDto,
 } from '../dto/user.dto';
 @Injectable({
   providedIn: 'root',
@@ -22,5 +23,13 @@ export class UserApiService {
       `${this.base}/users/${id}`,
       user,
     );
+  }
+
+  getUsers() {
+    return this.http.get<UsersResponseDto[]>(`${this.base}/users`);
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${this.base}/users/${id}`);
   }
 }

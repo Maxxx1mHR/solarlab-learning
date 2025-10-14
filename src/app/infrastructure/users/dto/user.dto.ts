@@ -28,3 +28,9 @@ export interface UpdateUserDtoResponse {
   name: string;
   login: string;
 }
+
+export interface UsersResponseDto {
+  id: string;
+  name: string;
+  login: string;
+}

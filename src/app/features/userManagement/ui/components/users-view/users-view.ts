@@ -1,0 +1,86 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { UserService } from '../../../service/user.service';
+import { UsersResponseDto } from '../../../../../infrastructure/users/dto/user.dto';
+import { TableModule } from 'primeng/table';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { TagModule } from 'primeng/tag';
+import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule } from '@angular/common';
+import { Paginator, PaginatorState } from 'primeng/paginator';
+import { Button } from 'primeng/button';
+import { LoginForm } from '../../../../../shared/components/smart/header/login-form/login-form';
+import { Modal } from '../../../../../shared/components/dump/modal/modal';
+
+@Component({
+  selector: 'app-users-view',
+  imports: [
+    TableModule,
+    TagModule,
+    IconFieldModule,
+    InputTextModule,
+    InputIconModule,
+    CommonModule,
+    Paginator,
+    Button,
+    LoginForm,
+    Modal,
+  ],
+  templateUrl: './users-view.html',
+  styleUrl: './users-view.scss',
+  standalone: true,
+})
+export class UsersView implements OnInit {
+  private userService = inject(UserService);
+
+  users: UsersResponseDto[] | [] = [];
+
+  selectedUsers: UsersResponseDto[] = [];
+
+  first = 0;
+  rows = 10;
+
+  searchString = '';
+
+  isDeleteModalOpen = false;
+
+  searchedUser() {
+    const searchString = this.searchString.trim().toLowerCase();
+    if (!searchString) {
+      return this.users;
+    }
+    return this.users.filter((user) => user.name.includes(searchString));
+  }
+
+  selectedNames() {
+    return this.selectedUsers.map((user) => user.name).join(', ');
+  }
+
+  onSearch(searchString: string) {
+    this.searchString = searchString;
+    this.first = 0;
+  }
+
+  pagedUsers() {
+    return this.searchedUser().slice(this.first, this.first + this.rows);
+  }
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first ?? 0;
+    this.rows = event.rows ?? 10;
+  }
+
+  submitDelete() {
+    const ids = this.selectedUsers.map((user) => user.id);
+    this.userService.deleteUser(ids).subscribe();
+  }
+
+  ngOnInit() {
+    this.userService.getUsers().subscribe({
+      next: (response) => {
+        this.users = response;
+        this.isDeleteModalOpen = false;
+      },
+    });
+  }
+}

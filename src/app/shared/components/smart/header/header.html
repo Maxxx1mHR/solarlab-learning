@@ -73,6 +73,14 @@
       severity="secondary"
       routerLink="profile"
     />
+    @if (userStore.getUser()?.role === "Admin") {
+      <p-button
+        label="Администрирование"
+        variant="text"
+        severity="secondary"
+        routerLink="user-management"
+      />
+    }
     <p-button
       label="Выйти"
       variant="text"

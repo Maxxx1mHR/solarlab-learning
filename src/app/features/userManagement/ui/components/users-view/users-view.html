@@ -1,0 +1,78 @@
+<div class="table">
+  <p-table
+    #dt2
+    [value]="pagedUsers()"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [scrollable]="true"
+    scrollHeight="calc(100vh - 410px)"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [(selection)]="selectedUsers"
+    paginatorStyleClass="test"
+  >
+    <ng-template #caption>
+      <div class="table__actions-wrapper">
+        <p-iconfield>
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            (input)="onSearch($event.target.value)"
+            placeholder="Поиск по имени"
+          />
+        </p-iconfield>
+        <p-button
+          label="Удалить"
+          severity="danger"
+          size="small"
+          (click)="isDeleteModalOpen = true"
+          [disabled]="!selectedUsers.length"
+        />
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+        <th>Имя пользователя</th>
+        <th>Логин</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-user>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="user" />
+        </td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.login }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator
+    class="pagination"
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="searchedUser().length"
+    [rowsPerPageOptions]="[10, 20, 30]"
+  />
+</div>
+<app-modal
+  class="modal"
+  [(visible)]="isDeleteModalOpen"
+  header="Вы уверены, что хотите удалить:"
+  position="center"
+>
+  <div class="modal__delete">
+    {{ selectedNames() }}
+  </div>
+  <div class="modal__button-wrapper">
+    <p-button label="Да" severity="danger" (click)="submitDelete()" />
+    <p-button
+      label="Отменить"
+      severity="secondary"
+      (click)="isDeleteModalOpen = false"
+    />
+  </div>
+</app-modal>
