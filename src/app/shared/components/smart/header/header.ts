@@ -16,7 +16,14 @@ import { MegaMenu } from 'primeng/megamenu';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { CategoriesService } from '../../../../entries/catergories/categories.service';
 import { AdvertSearch } from '../../../../features/advertSearch/ui/components/advert-search/advert-search';
-import { RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+} from '@angular/router';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { filter, finalize } from 'rxjs';
 interface Category {
   id: string;
   parentId: string;
@@ -40,6 +47,7 @@ interface Category {
     TieredMenu,
     AdvertSearch,
     RouterLink,
+    Breadcrumb,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
@@ -61,43 +69,52 @@ export class Header {
 
   items: MenuItem[] | undefined;
 
-  // onCategoryClick(category: Category, fullPath: string) {
-  //   console.log(this.menuItem());
-  //   console.log('Выбрана категория:', category);
-  //   console.log('fullPath:', fullPath);
-  // }
-
-  // mapCategories(
-  //   categories: Category[],
-  //   parentId = '00000000-0000-0000-0000-000000000000',
-  //   parentPath = '',
-  // ): MenuItem[] {
-  //   return categories
-  //     .filter((category) => category.parentId === parentId)
-  //     .map((category) => {
-  //       const fullPath = parentPath
-  //         ? `${parentPath} / ${category.name}`
-  //         : category.name;
-  //       const children = this.mapCategories(categories, category.id, fullPath);
-  //
-  //       return {
-  //         id: category.id,
-  //         label: category.name,
-  //         items: children.length > 0 ? children : undefined,
-  //         fullPath,
-  //         command: () => this.onCategoryClick(category, fullPath),
-  //       };
-  //     });
-  // }
-
-  // ngOnInit() {
-  //   this.categoriesService.getCategories().subscribe({
-  //     next: (categories) => this.menuItem.set(this.mapCategories(categories)),
-  //   });
-  // }
-  changeAuthMod() {
-    this.authMod.update((value) => (value === 'login' ? 'register' : 'login'));
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.items = this.buildBreadcrumb(this.route.root);
+      });
   }
+
+  buildBreadcrumb(
+    route: ActivatedRoute,
+    url = '',
+    breadcrumbs: MenuItem[] = [
+      { icon: 'pi pi-home', label: 'Главная', routerLink: '/' },
+    ],
+  ): MenuItem[] {
+    const children = route.children;
+
+    if (children.length === 0) {
+      return breadcrumbs;
+    }
+
+    for (const child of children) {
+      const routeURL = child.snapshot.url
+        .map((segment) => segment.path)
+        .join('/');
+      if (routeURL) {
+        url += `/${routeURL}`;
+      }
+
+      const label = child.snapshot.data['breadcrumb'];
+      if (label) {
+        breadcrumbs.push({
+          label,
+          routerLink: url,
+        });
+      }
+
+      return this.buildBreadcrumb(child, url, breadcrumbs);
+    }
+
+    return breadcrumbs;
+  }
+
   onLogout() {
     this.authorizationService.logout();
     this.popoverSettings.hide();

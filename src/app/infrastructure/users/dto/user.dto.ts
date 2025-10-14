@@ -1,6 +1,7 @@
 export interface UserDto {
   id: string;
   name: string;
+  login: string;
   role: string;
   adverts: Advert[];
   registeredTime: string;
@@ -14,4 +15,16 @@ interface Advert {
   isActive: boolean;
   imagesIds: string[];
   cost: number;
+}
+
+export interface UpdateUserDtoRequest {
+  name: string;
+  login: string;
+  password: string;
+}
+
+export interface UpdateUserDtoResponse {
+  id: string;
+  name: string;
+  login: string;
 }

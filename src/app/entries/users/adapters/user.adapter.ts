@@ -4,6 +4,7 @@ import { User } from '../domain/user';
 export function mapUserDtoToUser(dto: UserDto): User {
   return {
     name: dto.name,
+    login: dto.login,
     role: dto.role,
     userId: dto.id,
     adverts: dto.adverts,
