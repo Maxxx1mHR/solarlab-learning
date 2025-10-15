@@ -1,0 +1,26 @@
+
+.pagination {
+  position: absolute;
+  bottom: 68px;
+  padding: 0;
+}
+
+.table {
+  &__actions-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+}
+
+.modal {
+  &__delete {
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+  &__button-wrapper {
+    display: flex;
+    justify-content: end;
+    gap: 6px;
+  }
+}

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth-guard';
+import { AdminGuard, authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -35,5 +35,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('@pages').then((m) => m.Profile),
     data: { breadcrumb: 'Профиль' },
+  },
+  {
+    title: '',
+    path: 'user-management',
+    canActivate: [authGuard, AdminGuard],
+    loadComponent: () => import('@pages').then((m) => m.UserManagementPage),
+    data: { breadcrumb: 'Панель администратора' },
   },
 ];

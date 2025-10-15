@@ -3,3 +3,4 @@ export * from './product-detail-page/product-detail-page';
 export * from './new-adver-page/new-adver-page';
 export * from './my-adverts-page/my-adverts-page';
 export * from './profile/profile';
+export * from './user-management-page/user-management-page';
