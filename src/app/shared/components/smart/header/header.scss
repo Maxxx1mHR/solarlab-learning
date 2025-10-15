@@ -22,6 +22,17 @@ header {
       }
     }
 
+    ::ng-deep  &__button-register {
+      .p-button {
+        color: var(--base-white);
+
+        &:hover {
+          color: var(--base-white);
+          background: var(--blue-gray-500);
+        }
+      }
+    }
+
     ::ng-deep &__button-add {
       .p-button-icon {
         font-size: 10px;
