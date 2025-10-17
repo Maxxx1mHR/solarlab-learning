@@ -2,10 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { AdvertService } from '../../../services/advert.service';
 import { MenuItem } from 'primeng/api';
 import { Category } from '../../../../../infrastructure/categories/dto';
-import {
-  CategoriesService,
-  CategoryNode,
-} from '../../../../../entries/catergories/categories.service';
+import { CategoriesService } from '../../../../../entities/catergories/categories.service';
 import { Button } from 'primeng/button';
 import { PopoverModule } from 'primeng/popover';
 import { TieredMenu } from 'primeng/tieredmenu';
@@ -19,8 +16,9 @@ import {
 } from '@angular/forms';
 import { Message } from 'primeng/message';
 import { AdvertSearchStoreService } from '../../../services/advert-search.store.service';
-import { CategoriesStoreService } from '../../../../../entries/catergories/categories.store.service';
+import { CategoriesStoreService } from '../../../../../entities/catergories/categories.store.service';
 import { CascadeSelect } from 'primeng/cascadeselect';
+import { CategoryNode } from '@entities';
 
 interface Test {
   name: string;

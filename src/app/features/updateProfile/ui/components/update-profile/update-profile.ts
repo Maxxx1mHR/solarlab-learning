@@ -14,7 +14,7 @@ import { InputText } from 'primeng/inputtext';
 import { Message } from 'primeng/message';
 import { Password } from 'primeng/password';
 import { UserApiService } from '../../../../../infrastructure/users/services/user.api.service';
-import { UserStoreService } from '../../../../../entries/users/user.store.service';
+import { UserStoreService } from '../../../../../entities/users/user.store.service';
 import { ProfileService } from '../../../services/profile.service';
 
 interface UpdateProfileForm {

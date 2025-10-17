@@ -54,3 +54,10 @@ form {
     font:var(--T2)
   }
 }
+
+
+.loader-wrapper {
+  display: flex;
+  height: calc(100vh - 290px);
+  align-items: center;
+}

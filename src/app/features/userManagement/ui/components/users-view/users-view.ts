@@ -9,8 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { Button } from 'primeng/button';
-import { LoginForm } from '../../../../../shared/components/smart/header/login-form/login-form';
-import { Modal } from '../../../../../shared/components/dump/modal/modal';
+import { LoginForm } from '../../../../auth/ui/components/login-form/login-form';
+import { Modal } from '../../../../../shared/components/modal/modal';
 
 @Component({
   selector: 'app-users-view',

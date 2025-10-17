@@ -14,8 +14,6 @@ export class AdvertStoreService {
   }
 
   getAdverts() {
-    // return this.adverts();
-    console.log('===', this.adverts());
     return this.adverts();
   }
 }

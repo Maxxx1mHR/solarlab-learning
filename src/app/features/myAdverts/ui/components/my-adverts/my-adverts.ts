@@ -1,12 +1,12 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { AdvertService } from '../../../service/advert.service';
-import { UserStoreService } from '../../../../../entries/users/user.store.service';
+import { UserStoreService } from '../../../../../entities/users/user.store.service';
 import { AdvertStoreService } from '../../../service/advert.store.service';
-import { ProductCard } from '../../../../../pages/main-page/products-list/product-card';
+import { AdvertCard } from '../../../../../entities/advert-card';
 
 @Component({
   selector: 'app-my-adverts',
-  imports: [ProductCard],
+  imports: [AdvertCard],
   templateUrl: './my-adverts.html',
   styleUrl: './my-adverts.scss',
   standalone: true,

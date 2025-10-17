@@ -1,0 +1,22 @@
+<div class="adverts">
+  <div class="container">
+    <h4>Доска объявлений</h4>
+    <app-advert-search />
+  </div>
+  <div class="adverts__divider"></div>
+
+  <div class="container">
+    @if (advertSearchStoreService.isLoading()) {
+      <div class="loader-wrapper">
+        <p-progress-spinner ariaLabel="loading" />
+      </div>
+    } @else if (
+      advertSearchStoreService.advertSearchResult()?.length === 0 &&
+      advertSearchStoreService.isSearched()
+    ) {
+      <app-not-found />
+    } @else {
+      <app-adverts-list />
+    }
+  </div>
+</div>

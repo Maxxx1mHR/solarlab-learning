@@ -14,8 +14,8 @@ import { AdvertDetailStoreService } from '../../../services/advert.detail.store.
 import { Skeleton } from 'primeng/skeleton';
 import { ActivatedRoute } from '@angular/router';
 import { GalleriaModule } from 'primeng/galleria';
-import { LoginForm } from '../../../../../shared/components/smart/header/login-form/login-form';
-import { Modal } from '../../../../../shared/components/dump/modal/modal';
+import { LoginForm } from '../../../../auth/ui/components/login-form/login-form';
+import { Modal } from '../../../../../shared/components/modal/modal';
 import { PhonePipe } from '../../../../../shared/pipes/phone-pipe';
 import { CommentTree } from '../../../../advertComments/ui/components/comment-tree/comment-tree';
 import {
@@ -26,7 +26,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
-import { UserStoreService } from '../../../../../entries/users/user.store.service';
+import { UserStoreService } from '../../../../../entities/users/user.store.service';
 import { AdvertService } from '../../../../myAdverts/service/advert.service';
 import { AutoComplete } from 'primeng/autocomplete';
 import { CascadeSelect } from 'primeng/cascadeselect';
@@ -35,6 +35,7 @@ import { InputMask } from 'primeng/inputmask';
 import { InputNumber } from 'primeng/inputnumber';
 import { Textarea } from 'primeng/textarea';
 import { AdvertCreateForm } from '../../../../advertCreateForm/ui/components/advert-create-form/advert-create-form';
+import { CreateAdvertService } from '../../../../advertCreateForm/services/create-advert.service';
 
 @Component({
   selector: 'app-advert-detail',
@@ -68,6 +69,7 @@ export class AdvertDetail implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   userStoreService = inject(UserStoreService);
   advertService = inject(AdvertService);
+  createAdvertService = inject(CreateAdvertService);
 
   activeEditId = model<string | null>(null);
   activeReplyId = model<string | null>(null);
@@ -148,7 +150,7 @@ export class AdvertDetail implements OnInit {
   });
 
   deleteAdvert() {
-    this.advertService.deleteMyAdvert(this.advertId).subscribe();
+    this.createAdvertService.deleteAdvert(this.advertId).subscribe();
   }
 
   ngOnInit() {

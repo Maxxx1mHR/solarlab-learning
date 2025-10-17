@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Product } from '../../../pages/main-page/products-list/product-card';
+import { Product } from '../../../entities/advert-card';
 
 @Injectable({
   providedIn: 'root',

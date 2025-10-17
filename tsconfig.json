@@ -15,30 +15,14 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@pages": [
-        "./src/app/pages"
-      ],
-      "@shared_components_dump": [
-        "./src/app/shared/components/dump/"
-      ],
-      "@shared_components_smart": [
-        "./src/app/shared/components/smart/"
-      ],
-      "@shared_types": [
-        "./src/app/shared/types"
-      ],
-      "@infrastructure": [
-        "./src/app/infrastructure"
-      ],
-      "@core": [
-        "./src/app/core"
-      ],
-      "@environments": [
-        "./src/environments"
-      ],
-      "@features": [
-        "./src/app/features"
-      ]
+      "@pages": ["./src/app/pages"],
+      "@widgets": ["./src/app/widgets"],
+      "@shared": ["./src/app/shared"],
+      "@infrastructure": ["./src/app/infrastructure"],
+      "@core": ["./src/app/core"],
+      "@environments": ["./src/environments"],
+      "@features": ["./src/app/features"],
+      "@entities": ["./src/app/entities"]
     }
   },
   "angularCompilerOptions": {

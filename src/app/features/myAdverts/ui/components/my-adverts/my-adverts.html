@@ -1,5 +1,5 @@
 <div class="adverts">
-  @for (product of this.advertStoreService.getAdverts(); track product) {
-    <app-product-card [product]="product" />
+  @for (advert of this.advertStoreService.getAdverts(); track advert.id) {
+    <app-advert-card [advert]="advert" />
   }
 </div>

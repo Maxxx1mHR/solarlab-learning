@@ -1,5 +1,5 @@
 import Aura from '@primeuix/themes/aura';
-import {definePreset} from '@primeuix/themes';
+import { definePreset } from '@primeuix/themes';
 
 export const MyPreset = definePreset(Aura, {
   semantic: {
@@ -14,7 +14,7 @@ export const MyPreset = definePreset(Aura, {
       700: '{blue.700}',
       800: '{blue.800}',
       900: '{blue.900}',
-      950: '{blue.950}'
+      950: '{blue.950}',
     },
   },
   components: {
@@ -22,9 +22,28 @@ export const MyPreset = definePreset(Aura, {
       root: {
         borderRadius: '4px',
         paddingX: '12px',
-        paddingY: '8px'
+        paddingY: '8px',
       },
-    }
+      colorScheme: {
+        light: {
+          text: {
+            primary: {
+              color: 'var(--base-white)',
+              hoverBackground: 'var( --blue-gray-500)',
+            },
+          },
+        },
+      },
+    },
+    breadcrumb: {
+      root: {
+        padding: '14px 0 0',
+      },
+    },
+    cascadeselect: {
+      root: {
+        borderRadius: '4px',
+      },
+    },
   },
-
 });

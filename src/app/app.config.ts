@@ -21,7 +21,7 @@ import { firstValueFrom } from 'rxjs';
 // }
 
 function initAuth(auth: AuthorizationService) {
-  return () => auth.currentUser(); // уже с take(1)
+  return () => auth.currentUser();
 }
 
 export const appConfig: ApplicationConfig = {

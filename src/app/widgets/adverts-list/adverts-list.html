@@ -1,0 +1,8 @@
+<div class="adverts">
+  @for (
+    advert of advertSearchStoreService.advertSearchResult();
+    track advert.id
+  ) {
+    <app-advert-card [advert]="advert" />
+  }
+</div>

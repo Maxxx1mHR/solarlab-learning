@@ -4,6 +4,10 @@
   display: flex;
   flex: 1;
   gap: 12px;
+  //border-bottom: 1px solid var(--blue-gray-200);
+  //margin-left: -10px;
+  //margin-right: -10px;
+  padding: 10px 0;
 
   @include media.media-mobile-sm {
     flex-direction: column;
@@ -12,6 +16,7 @@
   &__category {
     display: flex;
     flex: 0 0 auto;
+    font: var(--T1);
   }
 
   &__input-wrapper{

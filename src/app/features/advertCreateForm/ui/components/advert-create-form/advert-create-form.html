@@ -1,136 +1,151 @@
-<form
-  [formGroup]="isEdit() ? updateAdvertForm : advertForm"
-  (ngSubmit)="isEdit() ? advertUpdate() : advertSubmit()"
->
-  <div class="field">
-    <label for="categoryId">
-      Выберите категорию <span class="field_required">*</span>
-    </label>
-    <p-cascadeselect
-      id="categoryId"
-      [options]="Categories()"
-      optionLabel="label"
-      optionGroupLabel="label"
-      [optionGroupChildren]="['items']"
-      [style]="{ minWidth: '14rem' }"
-      placeholder="Нажмите, чтобы выбрать"
-      formControlName="categoryId"
-      class="field__caregory"
-    />
+@if (categoryLoading) {
+  <div class="loader-wrapper">
+    <p-progress-spinner ariaLabel="loading" />
   </div>
+} @else {
+  <form
+    [formGroup]="advertForm"
+    (ngSubmit)="isEdit() ? advertUpdate() : advertSubmit()"
+  >
+    <div class="field">
+      <label for="categoryId">
+        Выберите категорию <span class="field_required">*</span>
+      </label>
+      <!--    <p-cascadeselect-->
+      <!--      [options]="cats ?? []"-->
+      <!--      optionLabel="label"-->
+      <!--      optionGroupLabel="label"-->
+      <!--      [optionGroupChildren]="['items']"-->
+      <!--      [style]="{ minWidth: '14rem' }"-->
+      <!--      placeholder="Выберите категорию"-->
+      <!--      class="search__category"-->
+      <!--      formControlName="categoryId"-->
+      <!--      [dataKey]="'value'"-->
+      <!--    />-->
 
-  <div class="field">
-    <label for="name">
-      Название объявления <span class="field_required">*</span>
-    </label>
-    <input
-      id="name"
-      type="text"
-      formControlName="name"
-      pInputText
-      placeholder="Что хотите продать?"
-    />
-  </div>
+      <p-cascadeselect
+        [options]="cats"
+        optionLabel="label"
+        optionGroupLabel="label"
+        [optionGroupChildren]="['items']"
+        [dataKey]="'value'"
+        formControlName="categoryId"
+        placeholder="Выберите категорию"
+      />
+    </div>
 
-  <div class="field">
-    <label for="description"> Описание </label>
-    <textarea
-      id="description"
-      formControlName="description"
-      pTextarea
-      fluid
-      class="field__description"
-      placeholder="Расскажите подробнее о товаре или услуге"
-    ></textarea>
-  </div>
-  <div class="field">
-    <label for="location">
-      Адрес (место проведения сделки) <span class="field_required">*</span>
-    </label>
-    <p-autocomplete
-      formControlName="location"
-      (completeMethod)="search($event)"
-      [suggestions]="suggestions()"
-      placeholder="Начните вводить адрес"
-    />
-  </div>
+    <div class="field">
+      <label for="name">
+        Название объявления <span class="field_required">*</span>
+      </label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        pInputText
+        placeholder="Что хотите продать?"
+      />
+    </div>
 
-  <!--  <div class="existing-grid">-->
-  <!--    @for (let it of existingImages, index; track it) {-->
-  <!--      <img [src]="it.previewUrl" alt="" />-->
-  <!--      <button pButton size="small" icon="pi pi-times" (click)="removeExisting(i)"></button>-->
-  <!--    }-->
+    <div class="field">
+      <label for="description"> Описание </label>
+      <textarea
+        id="description"
+        formControlName="description"
+        pTextarea
+        fluid
+        class="field__description"
+        placeholder="Расскажите подробнее о товаре или услуге"
+      ></textarea>
+    </div>
+    <div class="field">
+      <label for="location">
+        Адрес (место проведения сделки) <span class="field_required">*</span>
+      </label>
+      <p-autocomplete
+        formControlName="location"
+        (completeMethod)="search($event)"
+        [suggestions]="suggestions()"
+        placeholder="Начните вводить адрес"
+      />
+    </div>
 
-  <!--  </div>-->
+    <!--  <div class="existing-grid">-->
+    <!--    @for (let it of existingImages, index; track it) {-->
+    <!--      <img [src]="it.previewUrl" alt="" />-->
+    <!--      <button pButton size="small" icon="pi pi-times" (click)="removeExisting(i)"></button>-->
+    <!--    }-->
 
-  <div class="field__image">
-    <p-fileupload
-      name="images"
-      (onSelect)="onSelect($event)"
-      (onUpload)="onUpload($event)"
-      [multiple]="true"
-      chooseIcon="pi pi-images"
-      chooseLabel="Добавить картинки"
-      showUploadButton="false"
-      cancelLabel="Отменить"
-      accept="image/*"
-      maxFileSize="10000000"
-      mode="advanced"
-      fileLimit="10"
-      invalidFileLimitMessageSummary="Максимум 10 картинок"
-      invalidFileLimitMessageDetail=""
-    />
-    <div>Максимум 10 картинок в формате jpeg, png или heic</div>
-  </div>
-  <div>
-    @for (img of images; track img.id) {
-      @if (img.id) {
-        <div class="field__exist-image-wrapper">
-          <img width="100" height="100" [src]="img.src" alt="Картинка" />
-          <p-button
-            icon="pi pi-times"
-            severity="danger"
-            (click)="deleteImage(img.id)"
-          />
-        </div>
+    <!--  </div>-->
+
+    <div class="field__image">
+      <p-fileupload
+        name="images"
+        (onSelect)="onSelect($event)"
+        [multiple]="true"
+        chooseIcon="pi pi-images"
+        chooseLabel="Добавить картинки"
+        showUploadButton="false"
+        cancelLabel="Отменить"
+        accept="image/*"
+        maxFileSize="10000000"
+        mode="advanced"
+        fileLimit="10"
+        invalidFileLimitMessageSummary="Максимум 10 картинок"
+        invalidFileLimitMessageDetail=""
+      />
+      <div>Максимум 10 картинок в формате jpeg, png или heic</div>
+    </div>
+    <div>
+      @for (img of images; track img.id) {
+        @if (img.id) {
+          <div class="field__exist-image-wrapper">
+            <img width="100" height="100" [src]="img.src" alt="Картинка" />
+            <p-button
+              icon="pi pi-times"
+              severity="danger"
+              (click)="deleteImage(img.id)"
+            />
+          </div>
+        }
       }
-    }
-  </div>
+    </div>
 
-  <div class="field">
-    <label for="cost"> Цена <span class="field_required">*</span> </label>
-    <p-inputNumber
-      formControlName="cost"
-      inputId="cost"
-      mode="currency"
-      currency="RUB"
-      locale="ru-RU"
-      placeholder="0 ₽"
-    />
-  </div>
-  <div class="field">
-    <label for="email"> Электорнная почта </label>
-    <input
-      id="email"
-      formControlName="email"
-      pInputText
-      placeholder="Введите адрес электронной почты"
-    />
-  </div>
-  <div class="field">
-    <label for="phone">
-      Номер телефона <span class="field_required">*</span>
-    </label>
-    <p-inputmask
-      mask="+7 (999) 999-99-99"
-      id="phone"
-      formControlName="phone"
-      placeholder="Введите номер телефона"
-    />
-  </div>
+    <div class="field">
+      <label for="cost"> Цена <span class="field_required">*</span> </label>
+      <p-inputNumber
+        formControlName="cost"
+        inputId="cost"
+        mode="currency"
+        currency="RUB"
+        locale="ru-RU"
+        placeholder="0 ₽"
+      />
+    </div>
+    <div class="field">
+      <label for="email"> Электорнная почта </label>
+      <input
+        id="email"
+        formControlName="email"
+        pInputText
+        placeholder="Введите адрес электронной почты"
+      />
+    </div>
+    <div class="field">
+      <label for="phone">
+        Номер телефона <span class="field_required">*</span>
+      </label>
+      <p-inputmask
+        mask="+7 (999) 999-99-99"
+        id="phone"
+        formControlName="phone"
+        placeholder="Введите номер телефона"
+      />
+    </div>
 
-  <p-button
-    [label]="isEdit() ? 'Обновить объявление' : 'Разместить объявление'"
-    type="submit"
-  />
-</form>
+    <p-button
+      [label]="isEdit() ? 'Обновить объявление' : 'Разместить объявление'"
+      type="submit"
+    />
+  </form>
+}
