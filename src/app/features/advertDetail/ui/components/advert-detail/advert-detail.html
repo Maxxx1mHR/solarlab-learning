@@ -1,5 +1,5 @@
-@if (isAdvertEdit()) {
-  <app-advert-form [isEdit]="true" />
+@if (isAdvertEdit) {
+  <app-advert-form [(isEdit)]="isAdvertEdit" />
 } @else {
   @if (advertLoading()) {
     <div class="loader-wrapper">
@@ -8,8 +8,7 @@
   } @else {
     <div class="advert">
       @if (
-        userId ===
-        this.advertDetailStoreService.advertDetail()?.user?.createdById
+        userId === advertDetailStoreService.advertDetail()?.user?.createdById
       ) {
         <div class="advert__wrapper-button-action">
           <p-button

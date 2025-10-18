@@ -11,40 +11,32 @@
       <label for="categoryId">
         Выберите категорию <span class="field_required">*</span>
       </label>
-      <!--    <p-cascadeselect-->
-      <!--      [options]="cats ?? []"-->
-      <!--      optionLabel="label"-->
-      <!--      optionGroupLabel="label"-->
-      <!--      [optionGroupChildren]="['items']"-->
-      <!--      [style]="{ minWidth: '14rem' }"-->
-      <!--      placeholder="Выберите категорию"-->
-      <!--      class="search__category"-->
-      <!--      formControlName="categoryId"-->
-      <!--      [dataKey]="'value'"-->
-      <!--    />-->
-
-      <p-cascadeselect
-        [options]="cats"
-        optionLabel="label"
-        optionGroupLabel="label"
-        [optionGroupChildren]="['items']"
-        [dataKey]="'value'"
-        formControlName="categoryId"
-        placeholder="Выберите категорию"
-      />
+      <app-validation-message>
+        <p-cascadeselect
+          [options]="cats"
+          optionLabel="label"
+          optionGroupLabel="label"
+          [optionGroupChildren]="['items']"
+          [dataKey]="'value'"
+          formControlName="categoryId"
+          placeholder="Выберите категорию"
+        />
+      </app-validation-message>
     </div>
 
     <div class="field">
       <label for="name">
         Название объявления <span class="field_required">*</span>
       </label>
-      <input
-        id="name"
-        type="text"
-        formControlName="name"
-        pInputText
-        placeholder="Что хотите продать?"
-      />
+      <app-validation-message>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          pInputText
+          placeholder="Что хотите продать?"
+        />
+      </app-validation-message>
     </div>
 
     <div class="field">
@@ -82,22 +74,28 @@
       <p-fileupload
         name="images"
         (onSelect)="onSelect($event)"
+        (onRemove)="onRemove($event)"
         [multiple]="true"
         chooseIcon="pi pi-images"
         chooseLabel="Добавить картинки"
         showUploadButton="false"
         cancelLabel="Отменить"
-        accept="image/*"
+        accept="image/jpeg,image/png"
         maxFileSize="10000000"
         mode="advanced"
         fileLimit="10"
-        invalidFileLimitMessageSummary="Максимум 10 картинок"
+        [invalidFileLimitMessageSummary]="
+          'Максимум ' + fileLimit() + ' картинок'
+        "
         invalidFileLimitMessageDetail=""
       />
-      <div>Максимум 10 картинок в формате jpeg, png или heic</div>
+      <div>
+        Максимум 10 картинок в формате jpeg или png, еще доступно
+        {{ fileLimit() }}
+      </div>
     </div>
     <div>
-      @for (img of images; track img.id) {
+      @for (img of images(); track img.id) {
         @if (img.id) {
           <div class="field__exist-image-wrapper">
             <img width="100" height="100" [src]="img.src" alt="Картинка" />
@@ -143,9 +141,21 @@
       />
     </div>
 
-    <p-button
-      [label]="isEdit() ? 'Обновить объявление' : 'Разместить объявление'"
-      type="submit"
-    />
+    <div class="button-action-wrapper">
+      <p-button
+        [label]="isEdit() ? 'Обновить объявление' : 'Разместить объявление'"
+        [disabled]="advertForm.invalid"
+        [loading]="formSendLoading()"
+        type="submit"
+      />
+      @if (isEdit()) {
+        <p-button
+          label="Отменить"
+          [disabled]="formSendLoading()"
+          severity="secondary"
+          (click)="isEdit.set(false)"
+        />
+      }
+    </div>
   </form>
 }

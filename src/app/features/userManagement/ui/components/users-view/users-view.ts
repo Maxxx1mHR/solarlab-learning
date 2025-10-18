@@ -31,17 +31,13 @@ import { Modal } from '../../../../../shared/components/modal/modal';
   standalone: true,
 })
 export class UsersView implements OnInit {
-  private userService = inject(UserService);
+  private readonly userService = inject(UserService);
 
   users: UsersResponseDto[] | [] = [];
-
   selectedUsers: UsersResponseDto[] = [];
-
   first = 0;
   rows = 10;
-
   searchString = '';
-
   isDeleteModalOpen = false;
 
   searchedUser() {

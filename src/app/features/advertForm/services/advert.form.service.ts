@@ -26,14 +26,20 @@ export class AdvertFormService {
 
   getForm(): AvertCreateForm {
     return this.fb.group({
-      name: this.fb.nonNullable.control('', Validators.required),
+      name: this.fb.nonNullable.control('', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(255),
+      ]),
       description: this.fb.control(''),
       images: this.fb.control<File[]>([]), // TODO в форме есть но не управляется ей.
-      cost: this.fb.nonNullable.control(0),
+      cost: this.fb.nonNullable.control(0, Validators.required),
       email: this.fb.control(''),
-      phone: this.fb.nonNullable.control(''),
-      location: this.fb.nonNullable.control(''),
-      categoryId: this.fb.control<CategoryNode | null>(null),
+      phone: this.fb.nonNullable.control('', Validators.required),
+      location: this.fb.nonNullable.control('', Validators.required),
+      categoryId: this.fb.control<CategoryNode | null>(null, [
+        Validators.required,
+      ]),
     });
   }
 

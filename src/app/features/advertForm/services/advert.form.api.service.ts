@@ -20,7 +20,7 @@ export class AdvertFormApiService {
       .createAdvert(data)
       .pipe(
         tap((advertResponse) =>
-          this.router.navigate([`/product/${advertResponse.id}`]),
+          this.router.navigate([`/adverts/${advertResponse.id}`]),
         ),
       );
   }
@@ -36,12 +36,13 @@ export class AdvertFormApiService {
     const request = (deleteImgId?.length ? deleteImgId : [null]).map((id) =>
       id ? this.imagesApiService.deleteImages(id) : of(null),
     );
+    console.log(advertId);
 
     return forkJoin(request).pipe(
       switchMap(() =>
         this.advertApiService
           .updateAdvert(advertId, data)
-          .pipe(tap(() => this.router.navigate([`/my-adverts`]))),
+          .pipe(tap(() => this.router.navigate([`/adverts/${advertId}`]))),
       ),
     );
   }

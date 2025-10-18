@@ -5,6 +5,8 @@ import {
   input,
   signal,
   OnInit,
+  model,
+  computed,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -26,6 +28,7 @@ import { Fluid } from 'primeng/fluid';
 import { AdvertApiService } from '@infrastructure';
 import { InputMask } from 'primeng/inputmask';
 import {
+  FileRemoveEvent,
   FileSelectEvent,
   FileUpload,
   FileUploadEvent,
@@ -41,6 +44,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CategoriesService, CategoryNode } from '@entities';
 import { mapAdvertFormToDto } from '../../../adapters/advert.adapter';
 import { ProgressSpinner } from 'primeng/progressspinner';
+import { ValidationMessage } from '@shared';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-advert-form',
@@ -56,6 +61,7 @@ import { ProgressSpinner } from 'primeng/progressspinner';
     FileUpload,
     AutoComplete,
     ProgressSpinner,
+    ValidationMessage,
   ],
   templateUrl: './advert-form.html',
   styleUrl: './advert-form.scss',
@@ -77,6 +83,7 @@ export class AdvertForm implements OnInit {
   private readonly categoriesService = inject(CategoriesService);
 
   // Variables
+  MAX_COUNT_IMAGE = 10;
   public readonly advertForm: AvertCreateForm =
     this.createAdvertFormService.getForm();
 
@@ -84,22 +91,37 @@ export class AdvertForm implements OnInit {
 
   public id = this.activatedRoute.snapshot.params['id'];
 
-  isEdit = input(false);
+  readonly isEdit = model(false);
+  readonly formSendLoading = signal(false);
 
   categoryLoading = false;
 
-  images: Images[] = [];
+  // images: Images[] = [];
 
-  uploadedFiles: File[] = [];
+  images = signal<Images[]>([]);
 
+  uploadedFiles = signal<File[]>([]);
+  // uploadedFiles: File[] = [];
+
+  readonly fileLimit = computed(
+    () =>
+      this.MAX_COUNT_IMAGE -
+      this.images().length -
+      new Set(this.uploadedFiles()).size,
+  );
   onSelect(e: FileSelectEvent) {
-    this.uploadedFiles.push(...e.files);
+    console.log('1,', e);
+    this.uploadedFiles.update((arr) => [...arr, ...e.currentFiles]);
+  }
+  onRemove(e: FileRemoveEvent) {
+    this.uploadedFiles.update((arr) => arr.filter((file) => file !== e.file));
   }
 
   editAdvertId =
     this.advertDetailStoreService.advertDetail()?.advert.id ?? this.id;
 
-  selectDeletedImages: string[] = [];
+  // selectDeletedImages: string[] = [];
+  selectDeletedImages = signal<string[]>([]);
 
   cats: any;
 
@@ -107,21 +129,24 @@ export class AdvertForm implements OnInit {
 
   constructor() {
     effect(() => {
-      if (this.isEdit()) {
-        this.cats = this.categories(); // <- реактивно
-        if (!this.cats?.length) return;
-        const detail = this.advertDetailStoreService.advertDetail();
-        if (!detail) return;
+      this.cats = this.categories(); // <- реактивно
+      if (!this.cats?.length) return;
+      const detail = this.advertDetailStoreService.advertDetail();
+      if (this.isEdit() && detail) {
         this.createAdvertFormService.setForm(
           this.advertForm,
           detail,
           this.cats,
         );
-        this.images = detail.advert.imageSrc;
-        // this.createAdvertService
-        //   .getEditAdvertImages(detail.advert.imageSrc)
-        //   .subscribe();
+        // this.images = detail.advert.imageSrc;
+        this.images.set(detail.advert.imageSrc);
+      } else {
+        this.advertForm.reset();
       }
+
+      // this.createAdvertService
+      //   .getEditAdvertImages(detail.advert.imageSrc)
+      //   .subscribe();
     });
   }
 
@@ -133,23 +158,28 @@ export class AdvertForm implements OnInit {
   }
 
   deleteImage(id: string) {
-    this.images = this.images.filter((image) => image.id !== id);
-    this.selectDeletedImages.push(id);
+    this.images.set(this.images().filter((image) => image.id !== id));
+    // this.selectDeletedImages.push(id);
+    this.selectDeletedImages.update((arr) => [...arr, id]);
   }
 
   advertSubmit() {
+    this.formSendLoading.set(true);
     this.createAdvertService
-      .createAdvert(mapAdvertFormToDto(this.advertForm, this.uploadedFiles))
+      .createAdvert(mapAdvertFormToDto(this.advertForm, this.uploadedFiles()))
+      .pipe(finalize(() => this.formSendLoading.set(false)))
       .subscribe();
   }
 
   advertUpdate() {
+    this.formSendLoading.set(true);
     this.createAdvertService
       .updateAdvert(
-        this.selectDeletedImages,
+        this.selectDeletedImages(),
         this.editAdvertId,
-        mapAdvertFormToDto(this.advertForm, this.uploadedFiles),
+        mapAdvertFormToDto(this.advertForm, this.uploadedFiles()),
       )
+      .pipe(finalize(() => this.formSendLoading.set(false)))
       .subscribe();
   }
 

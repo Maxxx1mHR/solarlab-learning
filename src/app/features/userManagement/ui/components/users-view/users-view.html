@@ -5,7 +5,7 @@
     [rows]="10"
     [tableStyle]="{ 'min-width': '50rem' }"
     [scrollable]="true"
-    scrollHeight="calc(100vh - 410px)"
+    scrollHeight="calc(100vh - 310px)"
     [rowsPerPageOptions]="[5, 10, 20]"
     [(selection)]="selectedUsers"
     paginatorStyleClass="test"
@@ -27,6 +27,8 @@
           label="Удалить"
           severity="danger"
           size="small"
+          icon="pi pi-trash"
+          iconPos="right"
           (click)="isDeleteModalOpen = true"
           [disabled]="!selectedUsers.length"
         />

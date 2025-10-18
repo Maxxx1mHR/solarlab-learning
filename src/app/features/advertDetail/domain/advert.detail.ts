@@ -23,3 +23,5 @@ export interface Images {
   src: string;
   id: string;
 }
+
+export interface AdvertForm {}

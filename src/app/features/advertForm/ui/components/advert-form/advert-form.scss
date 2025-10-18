@@ -61,3 +61,8 @@ form {
   height: calc(100vh - 290px);
   align-items: center;
 }
+
+.button-action-wrapper {
+  display: flex;
+  gap: 4px;
+}

@@ -89,7 +89,8 @@ export class AdvertDetail implements OnInit {
     this.advertDetailStoreService.advertDetail()?.advert.id ?? this.id;
 
   readonly isPhoneModalOpen = signal(false);
-  readonly isAdvertEdit = signal(false);
+  isAdvertEdit = false;
+
   readonly responsiveOptions = responsiveOptions;
 
   createCommentForm: FormGroup;
@@ -125,7 +126,7 @@ export class AdvertDetail implements OnInit {
     this.isPhoneModalOpen.set(true);
   }
   editAdvert() {
-    this.isPhoneModalOpen.set(true);
+    this.isAdvertEdit = true;
   }
 
   galleryImages = computed(() => {

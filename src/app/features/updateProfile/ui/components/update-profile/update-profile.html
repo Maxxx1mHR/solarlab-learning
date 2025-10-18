@@ -1,208 +1,116 @@
-<p-button label="Редактировать" (click)="isEdit = true" />
-@if (isEdit) {
-  <form [formGroup]="updateUserForm" (ngSubmit)="submitUpdateProfile()">
-    <div class="register-form">
-      <div class="register-form__inputs">
-        <div class="register-form__inputs-wrapper">
+<form [formGroup]="updateUserForm" (ngSubmit)="submitUpdateProfile()">
+  <div class="update-form">
+    <div class="update-form__inputs">
+      <div class="update-form__inputs-wrapper">
+        <label for="name">
+          Имя
+          <span class="update-form_required">
+            @if (isEdit()) {
+              *
+            }
+          </span>
+        </label>
+        <app-validation-message>
           <input
-            type="text"
+            id="name"
             pInputText
             formControlName="name"
             placeholder="Имя"
+            [disabled]="true"
           />
-          @if (
-            updateUserForm.get("name")?.invalid &&
-            (updateUserForm.get("name")?.touched ||
-              updateUserForm.get("name")?.dirty)
-          ) {
-            @if (updateUserForm.get("name")?.hasError("required")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Обязательное поле!
-              </p-message>
+        </app-validation-message>
+      </div>
+      <div class="update-form__inputs-wrapper">
+        <label for="login">
+          Логин
+          <span class="update-form_required">
+            @if (isEdit()) {
+              *
             }
-            @if (updateUserForm.get("name")?.hasError?.("minlength")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Минимальная длина 4 символа!
-              </p-message>
-            }
-            @if (updateUserForm.get("name")?.hasError?.("maxlength")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Маскимальная длина 64 символа!
-              </p-message>
-            }
-          }
-        </div>
-        <div class="register-form__inputs-wrapper">
+          </span>
+        </label>
+        <app-validation-message>
           <input
+            id="login"
             type="text"
             pInputText
             formControlName="login"
             placeholder="Логин"
           />
-          @if (
-            updateUserForm.get("login")?.invalid &&
-            (updateUserForm.get("login")?.touched ||
-              updateUserForm.get("login")?.dirty)
-          ) {
-            @if (updateUserForm.get("login")?.hasError("required")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Обязательное поле!
-              </p-message>
-            }
-            @if (updateUserForm.get("login")?.hasError?.("minlength")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Минимальная длина 4 символа!
-              </p-message>
-            }
-            @if (updateUserForm.get("login")?.hasError?.("maxlength")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Маскимальная длина 64 символа!
-              </p-message>
-            }
-          }
-        </div>
-        <div class="register-form__inputs-wrapper">
-          <p-password
-            formControlName="passwordNew"
-            placeholder="Новый пароль"
-            [toggleMask]="true"
-            [feedback]="false"
-          />
-          @if (
-            updateUserForm.get("passwordNew")?.invalid &&
-            (updateUserForm.get("passwordNew")?.touched ||
-              updateUserForm.get("passwordNew")?.dirty)
-          ) {
-            @if (updateUserForm.get("passwordNew")?.hasError("required")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Обязательное поле!
-              </p-message>
-            }
-            @if (updateUserForm.get("passwordNew")?.hasError?.("minlength")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Минимальная длина 8 символа!
-              </p-message>
-            }
-            @if (updateUserForm.get("passwordNew")?.hasError?.("maxlength")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Маскимальная длина 50 символа!
-              </p-message>
-            }
-          }
-        </div>
-        <div class="register-form__inputs-wrapper">
-          <p-password
-            formControlName="passwordRepeat"
-            placeholder="Повторите пароль"
-            [toggleMask]="true"
-            [feedback]="false"
-          />
-          @if (
-            updateUserForm.get("passwordRepeat")?.touched ||
-            updateUserForm.get("passwordRepeat")?.dirty
-          ) {
-            @if (updateUserForm.get("passwordRepeat")?.hasError("required")) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Обязательное поле!
-              </p-message>
-            } @else if (
-              updateUserForm.get("passwordRepeat")?.hasError?.("minlength")
-            ) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Минимальная длина 8 символа!
-              </p-message>
-            } @else if (
-              updateUserForm.get("passwordRepeat")?.hasError?.("maxlength")
-            ) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Маскимальная длина 50 символа!
-              </p-message>
-            } @else if (updateUserForm.errors?.["samePassword"]) {
-              <p-message
-                severity="error"
-                variant="simple"
-                size="small"
-                class="register-form__error-message"
-              >
-                Пароли не совпадают!
-              </p-message>
-            }
-          }
-        </div>
+        </app-validation-message>
       </div>
-      <p-button
-        label="Сохранить"
-        type="submit"
-        class="register-form__submit-button"
-        [disabled]="updateUserForm.invalid"
-      />
-      <p-button label="Отменить" (click)="cancel()" />
+      @if (isEdit()) {
+        <div class="update-form__inputs-wrapper">
+          <label for="passwordNew">
+            Новый пароль
+            <span class="update-form_required"> * </span>
+          </label>
+          <app-validation-message>
+            <p-password
+              id="passwordNew"
+              formControlName="passwordNew"
+              placeholder="Новый пароль"
+              [toggleMask]="true"
+              [feedback]="false"
+            />
+          </app-validation-message>
+        </div>
+        <div class="update-form__inputs-wrapper">
+          <label for="passwordRepeat">
+            Повторите пароль <span class="update-form_required">*</span>
+          </label>
+          <app-validation-message>
+            <p-password
+              id="passwordRepeat"
+              formControlName="passwordRepeat"
+              placeholder="Повторите пароль"
+              [toggleMask]="true"
+              [feedback]="false"
+            />
+          </app-validation-message>
+          @if (updateUserForm.errors?.["isEqual"]) {
+            <p-message severity="error" variant="simple" size="small">
+              Пароли не совпадают!
+            </p-message>
+          }
+        </div>
+      }
     </div>
-  </form>
-} @else {
-  <div>
-    <div>Имя: {{ user?.name }}</div>
-    <div>Логин: {{ user?.login }}</div>
-    <div>Роль: {{ user?.role }}</div>
+
+    <div class="edit-button-wrapper">
+      @if (isEdit()) {
+        <p-button
+          label="Сохранить"
+          type="submit"
+          class="update-form__submit-button"
+          [disabled]="updateUserForm.invalid"
+          size="small"
+          icon="pi pi-save"
+          iconPos="right"
+          [loading]="isSubmitLoading()"
+        />
+
+        <p-button
+          label="Отменить"
+          (click)="onCancel()"
+          size="small"
+          severity="secondary"
+          icon="pi pi-times"
+          iconPos="right"
+          [disabled]="isSubmitLoading()"
+        />
+      } @else {
+        <div class="edit-button-wrapper">
+          <p-button
+            label="Редактировать"
+            (click)="onEdit()"
+            icon="pi pi-pencil"
+            iconPos="right"
+            size="small"
+            class="edit-button"
+          />
+        </div>
+      }
+    </div>
   </div>
-}
+</form>
