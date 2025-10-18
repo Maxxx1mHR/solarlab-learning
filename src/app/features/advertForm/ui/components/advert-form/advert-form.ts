@@ -14,8 +14,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AvertCreateForm } from '../../../domain/create-advert';
-import { CreateAdvertFormService } from '../../../services/create-advert.form.service';
+import { AvertCreateForm } from '../../../domain/advert';
+import { AdvertFormService } from '../../../services/advert.form.service';
 import { Button } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CategoriesStoreService } from '../../../../../entities/catergories/categories.store.service';
@@ -33,17 +33,17 @@ import {
 import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { DadataService } from '../../../../../entities/dadata/dadata.service';
 import { DadataStoreService } from '../../../../../entities/dadata/dadata.store.service';
-import { CreateAdvertService } from '../../../services/create-advert.service';
+import { AdvertFormApiService } from '../../../services/advert.form.api.service';
 import { AdvertDetailStoreService } from '../../../../advertDetail/services/advert.detail.store.service';
 import { Images } from '../../../../advertDetail/domain/advert.detail';
-import { AdvertService } from '../../../../myAdverts/service/advert.service';
+import { MyAdvertService } from '../../../../myAdverts/service/my.advert.service';
 import { ActivatedRoute } from '@angular/router';
 import { CategoriesService, CategoryNode } from '@entities';
-import { mapAdvertFormToDto } from '../../../adapters/create-advert.adapter';
+import { mapAdvertFormToDto } from '../../../adapters/advert.adapter';
 import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
-  selector: 'app-advert-create-form',
+  selector: 'app-advert-form',
   imports: [
     ReactiveFormsModule,
     Button,
@@ -57,17 +57,17 @@ import { ProgressSpinner } from 'primeng/progressspinner';
     AutoComplete,
     ProgressSpinner,
   ],
-  templateUrl: './advert-create-form.html',
-  styleUrl: './advert-create-form.scss',
+  templateUrl: './advert-form.html',
+  styleUrl: './advert-form.scss',
   standalone: true,
 })
-export class AdvertCreateForm implements OnInit {
+export class AdvertForm implements OnInit {
   // Services
-  private readonly createAdvertFormService = inject(CreateAdvertFormService);
+  private readonly createAdvertFormService = inject(AdvertFormService);
   private readonly advertApiService = inject(AdvertApiService);
-  private createAdvertService = inject(CreateAdvertService);
+  private createAdvertService = inject(AdvertFormApiService);
   advertDetailStoreService = inject(AdvertDetailStoreService);
-  private advertService = inject(AdvertService);
+  private advertService = inject(MyAdvertService);
   private activatedRoute = inject(ActivatedRoute);
 
   private dadataService = inject(DadataService);
@@ -93,7 +93,6 @@ export class AdvertCreateForm implements OnInit {
   uploadedFiles: File[] = [];
 
   onSelect(e: FileSelectEvent) {
-    console.log('e', e);
     this.uploadedFiles.push(...e.files);
   }
 

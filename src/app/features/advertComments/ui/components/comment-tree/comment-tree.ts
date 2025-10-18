@@ -52,7 +52,7 @@ export class CommentTree {
   }
 
   get currentUserId(): string | undefined {
-    return this.userStoreService.getUser()?.userId;
+    return this.userStoreService.user()?.userId;
   }
 
   startEdit(node: CommentNode) {

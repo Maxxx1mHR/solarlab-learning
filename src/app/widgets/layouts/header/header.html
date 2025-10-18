@@ -28,7 +28,7 @@
             >
               <ng-template pTemplate>
                 <i class="pi pi-user"></i>
-                <span>{{ userStore.getUser()?.name }}</span>
+                <span>{{ userStore.user()?.name }}</span>
                 <i class="pi pi-chevron-down"></i>
               </ng-template>
             </p-button>
@@ -36,7 +36,6 @@
               label="Новое объявление"
               icon="pi pi-plus"
               iconPos="right"
-              class="header-top__button-add"
               routerLink="/new-advert"
             />
           </div>
@@ -79,7 +78,7 @@
       severity="secondary"
       routerLink="profile"
     />
-    @if (userStore.getUser()?.role === "Admin") {
+    @if (userStore.user()?.role === "Admin") {
       <p-button
         label="Администрирование"
         variant="text"

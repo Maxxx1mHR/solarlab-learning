@@ -19,7 +19,7 @@ import {
 import { mapAdvertSearchDtoToProductList } from '../adapters/product-list.adapter';
 import { Product } from '../domain/product';
 import { MessageService } from 'primeng/api';
-import { AdvertSelectedStoreService } from '../../advertDetail/services/advert-selected.store.service';
+import { AdvertSelectedStoreService } from '../../advertDetail/services/advert.selected.store.service';
 
 @Injectable({
   providedIn: 'root',

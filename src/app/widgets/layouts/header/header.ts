@@ -25,7 +25,7 @@ import {
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, finalize } from 'rxjs';
 import { Menubar } from 'primeng/menubar';
-import { buildBreadcrumb } from '@shared';
+import { buildBreadcrumb, ValidationMessage } from '@shared';
 import { Breadcrumbs } from '../../breadcrumbs/breadcrumbs';
 interface Category {
   id: string;
@@ -53,6 +53,7 @@ interface Category {
     Breadcrumb,
     Menubar,
     Breadcrumbs,
+    ValidationMessage,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',

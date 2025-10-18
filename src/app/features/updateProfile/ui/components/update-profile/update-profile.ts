@@ -37,7 +37,7 @@ export class UpdateProfile {
 
   isEdit = false;
 
-  user = this.userStoreService.getUser();
+  user = this.userStoreService.user();
 
   updateUserForm: FormGroup<UpdateProfileForm>;
 

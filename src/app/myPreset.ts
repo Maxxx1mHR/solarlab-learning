@@ -29,7 +29,12 @@ export const MyPreset = definePreset(Aura, {
           text: {
             primary: {
               color: 'var(--base-white)',
-              hoverBackground: 'var( --blue-gray-500)',
+              hoverBackground: 'var(--blue-gray-500)',
+            },
+          },
+          root: {
+            danger: {
+              background: 'var(--danger-500)',
             },
           },
         },
@@ -37,7 +42,7 @@ export const MyPreset = definePreset(Aura, {
     },
     breadcrumb: {
       root: {
-        padding: '14px 0 0',
+        padding: '14px 0',
       },
     },
     cascadeselect: {

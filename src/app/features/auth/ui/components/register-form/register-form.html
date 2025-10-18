@@ -2,134 +2,48 @@
   <div class="register-form">
     <div class="register-form__inputs">
       <div class="register-form__inputs-wrapper">
-        <input
-          type="text"
-          pInputText
-          formControlName="name"
-          placeholder="Имя"
-        />
-        @if (
-          registerForm.get("name")?.invalid &&
-          (registerForm.get("name")?.touched || registerForm.get("name")?.dirty)
-        ) {
-          @if (registerForm.get("name")?.hasError("required")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Обязательное поле!
-            </p-message>
-          }
-          @if (registerForm.get("name")?.hasError?.("minlength")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Минимальная длина 4 символа!
-            </p-message>
-          }
-          @if (registerForm.get("name")?.hasError?.("maxlength")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Маскимальная длина 64 символа!
-            </p-message>
-          }
-        }
+        <app-validation-message>
+          <input
+            type="text"
+            pInputText
+            formControlName="name"
+            placeholder="Имя"
+          />
+        </app-validation-message>
       </div>
       <div class="register-form__inputs-wrapper">
-        <input
-          type="text"
-          pInputText
-          formControlName="login"
-          placeholder="Логин"
-        />
-        @if (
-          registerForm.get("login")?.invalid &&
-          (registerForm.get("login")?.touched ||
-            registerForm.get("login")?.dirty)
-        ) {
-          @if (registerForm.get("login")?.hasError("required")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Обязательное поле!
-            </p-message>
-          }
-          @if (registerForm.get("login")?.hasError?.("minlength")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Минимальная длина 4 символа!
-            </p-message>
-          }
-          @if (registerForm.get("login")?.hasError?.("maxlength")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Маскимальная длина 64 символа!
-            </p-message>
-          }
-        }
+        <app-validation-message>
+          <input
+            type="text"
+            pInputText
+            formControlName="login"
+            placeholder="Логин"
+          />
+        </app-validation-message>
       </div>
       <div class="register-form__inputs-wrapper">
-        <p-password
-          formControlName="password"
-          placeholder="Пароль"
-          [toggleMask]="true"
-          [feedback]="false"
-        />
-        @if (
-          registerForm.get("password")?.invalid &&
-          (registerForm.get("password")?.touched ||
-            registerForm.get("password")?.dirty)
-        ) {
-          @if (registerForm.get("password")?.hasError("required")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Обязательное поле!
-            </p-message>
-          }
-          @if (registerForm.get("password")?.hasError?.("minlength")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Минимальная длина 8 символа!
-            </p-message>
-          }
-          @if (registerForm.get("password")?.hasError?.("maxlength")) {
-            <p-message
-              severity="error"
-              variant="simple"
-              size="small"
-              class="register-form__error-message"
-            >
-              Маскимальная длина 50 символа!
-            </p-message>
-          }
+        <app-validation-message>
+          <p-password
+            formControlName="password"
+            placeholder="Пароль"
+            [toggleMask]="true"
+            [feedback]="false"
+          />
+        </app-validation-message>
+      </div>
+      <div class="login-form__inputs-wrapper">
+        <app-validation-message>
+          <p-password
+            formControlName="passwordRepeat"
+            placeholder="Повторите пароль"
+            [toggleMask]="true"
+            [feedback]="false"
+          />
+        </app-validation-message>
+        @if (registerForm.errors?.["isEqual"]) {
+          <p-message severity="error" variant="simple" size="small">
+            Пароли не совпадают!
+          </p-message>
         }
       </div>
     </div>
@@ -138,7 +52,7 @@
       type="submit"
       class="register-form__submit-button"
       [disabled]="registerForm.invalid"
-      [loading]="isLoading()"
+      [loading]="isRegisterLoading()"
     />
   </div>
 </form>

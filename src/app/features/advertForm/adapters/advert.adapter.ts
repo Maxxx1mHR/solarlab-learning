@@ -1,4 +1,4 @@
-import { AvertCreateForm } from '../domain/create-advert';
+import { AvertCreateForm } from '../domain/advert';
 
 export function mapAdvertFormToDto(
   form: AvertCreateForm,

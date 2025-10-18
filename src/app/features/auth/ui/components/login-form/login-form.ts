@@ -1,20 +1,33 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
-import { AuthorizationService, AuthorizationStoreService } from '@core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  Component,
+  EventEmitter,
+  inject,
+  output,
+  Output,
+  signal,
+} from '@angular/core';
+import { AuthorizationService, AuthorizationStoreService } from '@core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Message } from 'primeng/message';
 import { Password } from 'primeng/password';
 import { Button } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { TLoginForm } from '../../../domain';
+import { mapLoginFormToDto } from '../../../adapters/login.adapter';
+import { finalize } from 'rxjs';
+import { LoginFormService } from '../../../services';
+import { ValidationMessage } from '@shared';
 
 @Component({
   selector: 'app-login-form',
-  imports: [Message, Password, InputTextModule, Button, ReactiveFormsModule],
+  imports: [
+    Message,
+    Password,
+    InputTextModule,
+    Button,
+    ReactiveFormsModule,
+    ValidationMessage,
+  ],
   templateUrl: './login-form.html',
   styleUrl: './login-form.scss',
   standalone: true,
@@ -22,34 +35,24 @@ import { InputTextModule } from 'primeng/inputtext';
 export class LoginForm {
   private authorizationService = inject(AuthorizationService);
   private authorizationStoreService = inject(AuthorizationStoreService);
+  private readonly loginFormService = inject(LoginFormService);
 
-  isLoading = this.authorizationStoreService.isLoading;
+  // Variables
+  readonly loginForm: TLoginForm = this.loginFormService.getForm();
+  readonly isLoginLoading = signal(false);
 
-  @Output() closeModal = new EventEmitter<void>();
-
-  loginForm: FormGroup;
-
-  constructor(private formBuilder: FormBuilder) {
-    this.loginForm = formBuilder.group({
-      login: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(64),
-      ]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50),
-      ]),
-    });
-  }
+  readonly closeModal = output<void>();
 
   login() {
-    this.authorizationService.login(this.loginForm.value).subscribe({
-      next: () => {
-        this.closeModal.emit();
-        this.loginForm.reset();
-      },
-    });
+    this.isLoginLoading.set(true);
+    this.authorizationService
+      .login(mapLoginFormToDto(this.loginForm))
+      .pipe(finalize(() => this.isLoginLoading.set(false)))
+      .subscribe({
+        next: () => {
+          this.closeModal.emit();
+          this.loginForm.reset();
+        },
+      });
   }
 }

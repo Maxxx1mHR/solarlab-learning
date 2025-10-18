@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  output,
+  Output,
+  signal,
+} from '@angular/core';
 import { AuthorizationService, AuthorizationStoreService } from '@core';
 import {
   FormBuilder,
@@ -12,50 +20,46 @@ import { Message } from 'primeng/message';
 import { Password } from 'primeng/password';
 import { Popover } from 'primeng/popover';
 import { InputTextModule } from 'primeng/inputtext';
+import { RegisterFormService } from '../../../services/register.form.service';
+import { TRegisterForm } from '../../../domain/register.type';
+import { mapRegisterFormToDto } from '../../../adapters/register.adapter';
+import { finalize } from 'rxjs';
+import { ValidationMessage } from '@shared';
 
 @Component({
   selector: 'app-register-form',
-  imports: [Button, Message, Password, ReactiveFormsModule, InputTextModule],
+  imports: [
+    Button,
+    Message,
+    Password,
+    ReactiveFormsModule,
+    InputTextModule,
+    ValidationMessage,
+  ],
   templateUrl: './register-form.html',
   styleUrl: './register-form.scss',
   standalone: true,
 })
 export class RegisterForm {
   private authorizationService = inject(AuthorizationService);
-  private authorizationStoreService = inject(AuthorizationStoreService);
+  private readonly registerFormService = inject(RegisterFormService);
 
-  isLoading = this.authorizationStoreService.isLoading;
+  // Variables
+  readonly registerForm: TRegisterForm = this.registerFormService.getForm();
+  readonly isRegisterLoading = signal(false);
 
-  @Output() closeModal = new EventEmitter<void>();
-
-  registerForm: FormGroup;
-
-  constructor(private formBuilder: FormBuilder) {
-    this.registerForm = formBuilder.group({
-      name: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(64),
-      ]),
-      login: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(64),
-      ]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50),
-      ]),
-    });
-  }
+  readonly closeModal = output<void>();
 
   register() {
-    this.authorizationService.register(this.registerForm.value).subscribe({
-      next: () => {
-        this.closeModal.emit();
-        this.registerForm.reset();
-      },
-    });
+    this.isRegisterLoading.set(true);
+    this.authorizationService
+      .register(mapRegisterFormToDto(this.registerForm))
+      .pipe(finalize(() => this.isRegisterLoading.set(false)))
+      .subscribe({
+        next: () => {
+          this.closeModal.emit();
+          this.registerForm.reset();
+        },
+      });
   }
 }

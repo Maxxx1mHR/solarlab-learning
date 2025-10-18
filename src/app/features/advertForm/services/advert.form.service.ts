@@ -1,28 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { AvertCreateForm } from '../domain/create-advert';
-import { CategoriesStoreService, CategoryNode } from '@entities';
-import { AdvertDetail } from '../../advertDetail/domain/advert.detail';
-import { AdvertDetailStoreService } from '../../advertDetail/services/advert.detail.store.service';
-
-// interface MenuNode {
-//   label: string;
-//   value?: string;
-//   items?: MenuNode[];
-// }
+import { FormBuilder, Validators } from '@angular/forms';
+import { AvertCreateForm } from '../domain/advert';
+import { CategoryNode } from '@entities';
+import { AdvertDetail } from '@features';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CreateAdvertFormService {
-  private readonly advertDetailStoreService = inject(AdvertDetailStoreService);
-  private categoriesStoreService = inject(CategoriesStoreService);
-
+export class AdvertFormService {
   private fb = inject(FormBuilder);
 
   findCategoryById(
@@ -43,17 +28,11 @@ export class CreateAdvertFormService {
     return this.fb.group({
       name: this.fb.nonNullable.control('', Validators.required),
       description: this.fb.control(''),
-      images: this.fb.control<File[]>([]), // TODO Убрать из формы, т.к. p-fileupload не может быт связан с формой
+      images: this.fb.control<File[]>([]), // TODO в форме есть но не управляется ей.
       cost: this.fb.nonNullable.control(0),
       email: this.fb.control(''),
       phone: this.fb.nonNullable.control(''),
       location: this.fb.nonNullable.control(''),
-      // categoryId: this.fb.nonNullable.control<CategoryNode>({
-      //   label: 'Работа',
-      //   items: [],
-      //   fullPath: 'Работа',
-      //   value: '19dca9ff-4528-4659-b92f-1772613a96ee',
-      // }),
       categoryId: this.fb.control<CategoryNode | null>(null),
     });
   }
@@ -63,22 +42,14 @@ export class CreateAdvertFormService {
     advertDetail: AdvertDetail,
     categories: CategoryNode[],
   ) {
-    // const categories = this.categoriesStoreService.getCategories();
-
-    console.log('!!', categories);
-
     const { advert, user } = advertDetail;
     const leaf = advert.category?.id
       ? this.findCategoryById(categories, advert.category.id)
       : undefined;
 
-    console.log('leaf123', leaf);
-
     form.reset(
       {
         categoryId: leaf,
-        // categoryId: advert.category.id,
-        // categoryId: '19dca9ff-4528-4659-b92f-1772613a96ee',
         name: advert.title,
         description: advert.description,
         location: advert.location,
@@ -88,6 +59,5 @@ export class CreateAdvertFormService {
       },
       { emitEvent: false }, // TODO
     );
-    console.log('form', form);
   }
 }

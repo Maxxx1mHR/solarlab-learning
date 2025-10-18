@@ -1,0 +1,21 @@
+<ng-content></ng-content>
+
+@if (show) {
+  <p-message severity="error" variant="simple" size="small">
+    @if (errs?.["required"]) {
+      {{ getTextRequired() }}
+    }
+    @if (errs?.["minlength"]) {
+      {{ getTextMin() }}
+    }
+    @if (errs?.["maxlength"]) {
+      {{ getTextMax() }}
+    }
+    @if (errs?.["email"]) {
+      {{ getTextEmail() }}
+    }
+    @if (errs?.["pattern"]) {
+      {{ getTextPattern() }}
+    }
+  </p-message>
+}

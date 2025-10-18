@@ -4,16 +4,7 @@ import {
   LoginRequestDto,
   RegisterRequestDto,
 } from '@infrastructure';
-import {
-  catchError,
-  finalize,
-  map,
-  of,
-  switchMap,
-  take,
-  tap,
-  throwError,
-} from 'rxjs';
+import { catchError, map, of, switchMap, tap, throwError } from 'rxjs';
 import { AuthorizationStateService } from './authorization.state.service';
 import { AuthorizationStoreService } from './authorization.store.service';
 import { MessageService } from 'primeng/api';
@@ -35,8 +26,6 @@ export class AuthorizationService {
   private messageService = inject(MessageService);
 
   login(data: LoginRequestDto) {
-    this.authStoreService.setLoading(true);
-
     return this.apiService.login(data).pipe(
       tap((response) => {
         this.authStoreService.setAuthToken(response);
@@ -63,7 +52,6 @@ export class AuthorizationService {
         });
         return throwError(() => err);
       }),
-      finalize(() => this.authStoreService.setLoading(false)),
     );
   }
 

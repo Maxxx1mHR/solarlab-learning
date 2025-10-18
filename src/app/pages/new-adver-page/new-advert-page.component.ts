@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { AdvertCreateForm } from '../../features/advertCreateForm/ui/components/advert-create-form/advert-create-form';
+import { AdvertForm } from '@features';
 
 @Component({
   selector: 'app-new-advert-page',
-  imports: [AdvertCreateForm],
+  imports: [AdvertForm],
   templateUrl: './new-advert-page.component.html',
   styleUrl: './new-advert-page.component.scss',
   standalone: true,

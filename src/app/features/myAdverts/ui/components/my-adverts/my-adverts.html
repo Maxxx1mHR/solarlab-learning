@@ -1,5 +1,13 @@
 <div class="adverts">
-  @for (advert of this.advertStoreService.getAdverts(); track advert.id) {
-    <app-advert-card [advert]="advert" />
+  @if (loading()) {
+    <div class="loader-wrapper">
+      <p-progress-spinner ariaLabel="loading" />
+    </div>
+  } @else if (advertStoreService.adverts().length) {
+    @for (advert of advertStoreService.adverts(); track advert.id) {
+      <app-advert-card [advert]="advert" />
+    }
+  } @else {
+    <app-not-found />
   }
 </div>

@@ -2,7 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { Product } from './advert-card.types';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
-import { AdvertSelectedStoreService } from '../../features/advertDetail/services/advert-selected.store.service';
+import { AdvertSelectedStoreService } from '../../features/advertDetail/services/advert.selected.store.service';
 import { UserStoreService } from '../users/user.store.service';
 
 @Component({

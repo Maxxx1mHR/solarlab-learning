@@ -4,3 +4,9 @@
   flex-wrap: wrap;
   gap: 32px 24px;
 }
+
+.loader-wrapper {
+  display: flex;
+  height: calc(100vh - 290px);
+  align-items: center;
+}

@@ -12,7 +12,6 @@ export interface AdvertDetail {
     location: string;
     price: string;
     imageSrc: Images[];
-    // imagesIds: string[];
     category: {
       id: string;
       name: string;
