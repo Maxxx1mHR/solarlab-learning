@@ -1,0 +1,23 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__inputs-wrapper {
+    position: relative;
+
+    input {
+      min-width: 244px;
+    }
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__submit-button {
+    margin: 0 auto;
+  }
+}

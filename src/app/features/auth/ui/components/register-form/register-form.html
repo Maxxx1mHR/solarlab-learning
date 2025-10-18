@@ -1,0 +1,58 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+  <div class="register-form">
+    <div class="register-form__inputs">
+      <div class="register-form__inputs-wrapper">
+        <app-validation-message>
+          <input
+            type="text"
+            pInputText
+            formControlName="name"
+            placeholder="Имя"
+          />
+        </app-validation-message>
+      </div>
+      <div class="register-form__inputs-wrapper">
+        <app-validation-message>
+          <input
+            type="text"
+            pInputText
+            formControlName="login"
+            placeholder="Логин"
+          />
+        </app-validation-message>
+      </div>
+      <div class="register-form__inputs-wrapper">
+        <app-validation-message>
+          <p-password
+            formControlName="password"
+            placeholder="Пароль"
+            [toggleMask]="true"
+            [feedback]="false"
+          />
+        </app-validation-message>
+      </div>
+      <div class="login-form__inputs-wrapper">
+        <app-validation-message>
+          <p-password
+            formControlName="passwordRepeat"
+            placeholder="Повторите пароль"
+            [toggleMask]="true"
+            [feedback]="false"
+          />
+        </app-validation-message>
+        @if (registerForm.errors?.["isEqual"]) {
+          <p-message severity="error" variant="simple" size="small">
+            Пароли не совпадают!
+          </p-message>
+        }
+      </div>
+    </div>
+    <p-button
+      label="Зарегистрироваться"
+      type="submit"
+      class="register-form__submit-button"
+      [disabled]="registerForm.invalid"
+      [loading]="isRegisterLoading()"
+    />
+  </div>
+</form>

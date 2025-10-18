@@ -1,23 +1,37 @@
-@if (
-  userId === this.advertDetailStoreService.advertDetail()?.user?.createdById
-) {
-  <div>
-    <p-button label="Удалить" severity="danger" (click)="deleteAdvert()" />
-    <p-button label="Редактировать" severity="info" (click)="isEdit = true" />
-  </div>
-}
-@if (isEdit) {
-  <app-advert-create-form [isEdit]="true" />
+@if (isAdvertEdit) {
+  <app-advert-form [(isEdit)]="isAdvertEdit" />
 } @else {
-  <div class="advert-detail">
-    <div class="advert-detail__block">
-      @if (advertDetailStoreService.isLoading()) {
-        <p-skeleton width="300px" class="mb-2" />
-        <br />
-        <p-skeleton width="300px" height="300px" class="mr-2" />
-      } @else {
+  @if (advertLoading()) {
+    <div class="loader-wrapper">
+      <p-progress-spinner ariaLabel="loading" />
+    </div>
+  } @else {
+    <div class="advert">
+      @if (
+        userId === advertDetailStoreService.advertDetail()?.user?.createdById
+      ) {
+        <div class="advert__wrapper-button-action">
+          <p-button
+            label="Удалить"
+            severity="danger"
+            icon="pi pi-trash"
+            iconPos="right"
+            (click)="deleteAdvert()"
+            size="small"
+            [loading]="deleteLoading()"
+          />
+          <p-button
+            label="Редактировать"
+            (click)="editAdvert()"
+            icon="pi pi-pencil"
+            iconPos="right"
+            size="small"
+          />
+        </div>
+      }
+      <div class="advert__detail">
         <div>
-          <h3 class="advert-detail__title">
+          <h3 class="advert__title">
             {{ advertDetailStoreService.advertDetail()?.advert?.title }}
           </h3>
           <div>
@@ -40,69 +54,79 @@
             </p-galleria>
           </div>
         </div>
-      }
-    </div>
-    <div class="advert-detail__description">
-      @if (advertDetailStoreService.isLoading()) {
-        <p-skeleton width="300px" class="mb-2" />
-        <br />
-      } @else {
-        <h3 class="advert-detail__price">
-          {{
-            advertDetailStoreService.advertDetail()?.advert?.price
-              | currency: "RUB" : "symbol-narrow" : "1.0-0"
-          }}
-        </h3>
-      }
-      <p-button
-        label="Показать номер телефона"
-        icon="pi pi-phone"
-        size="large"
-        [disabled]="advertDetailStoreService.isLoading()"
-        class="advert-detail__phone-button"
-        (click)="isPhoneModalOpen = true"
-      />
-      <div class="advert-detail__address-block">
-        <h4>Адрес</h4>
-        @if (advertDetailStoreService.isLoading()) {
-          <p-skeleton width="10rem" class="mb-2" />
-        } @else {
-          <div>
-            <div class="advert-detail__address-description">
-              {{ advertDetailStoreService.advertDetail()?.advert?.location }}
+        <div>
+          <div class="advert__description">
+            <h3 class="advert__price">
+              {{
+                advertDetailStoreService.advertDetail()?.advert?.price
+                  | currency: "RUB" : "symbol-narrow" : "1.0-0"
+              }}
+            </h3>
+            <p-button
+              label="Показать номер телефона"
+              icon="pi pi-phone"
+              size="large"
+              [disabled]="advertLoading()"
+              class="advert__phone-button"
+              (click)="openPhoneModal()"
+            />
+            <div class="advert__address-block">
+              <h4>Адрес</h4>
+              @if (advertLoading()) {
+                <p-skeleton width="10rem" class="mb-2" />
+              } @else {
+                <div>
+                  <div class="advert__address-description">
+                    {{
+                      advertDetailStoreService.advertDetail()?.advert?.location
+                    }}
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="advert__description-block">
+              <h4>Описание</h4>
+              @if (advertLoading()) {
+                <p-skeleton width="10rem" class="mb-2" />
+              } @else {
+                <div class="advert__description-text">
+                  {{
+                    advertDetailStoreService.advertDetail()?.advert?.description
+                  }}
+                </div>
+              }
             </div>
           </div>
-        }
-      </div>
-      <div class="advert-detail__description-block">
-        <h4>Описание</h4>
-        @if (advertDetailStoreService.isLoading()) {
-          <p-skeleton width="10rem" class="mb-2" />
-        } @else {
-          <div class="advert-detail__description-text">
-            {{ advertDetailStoreService.advertDetail()?.advert?.description }}
-          </div>
-        }
+        </div>
       </div>
     </div>
-  </div>
-  <div>
-    <h4>Комментарии</h4>
-    <app-comment-tree
-      [nodes]="advertDetailStoreService.advertComments()"
-      [(activeEditId)]="activeEditId"
-      [(activeReplyId)]="activeReplyId"
-    />
-    <form [formGroup]="createCommentForm" (ngSubmit)="submitCreateComment()">
-      <input
-        type="text"
-        pInputText
-        placeholder="Введите комментарий"
-        formControlName="createComment"
+    <div>
+      <h4>Комментарии</h4>
+      <app-comment-tree
+        [nodes]="advertDetailStoreService.advertComments()"
+        [(activeEditId)]="activeEditId"
+        [(activeReplyId)]="activeReplyId"
       />
-      <p-button icon="pi pi-send" type="submit" />
-    </form>
-  </div>
+      <form
+        [formGroup]="createCommentForm"
+        (ngSubmit)="submitCreateComment()"
+        class="advert__comment-input-form"
+      >
+        <input
+          type="text"
+          pInputText
+          placeholder="Введите комментарий"
+          formControlName="createComment"
+        />
+        <p-button
+          icon="pi pi-send"
+          type="submit"
+          [loading]="createCommentLoading()"
+        />
+      </form>
+    </div>
+  }
+
   <app-modal
     [(visible)]="isPhoneModalOpen"
     header="{{ advertDetailStoreService.advertDetail()?.user?.name }}"

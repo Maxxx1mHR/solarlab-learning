@@ -3,23 +3,28 @@ import { AdminGuard, authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {
-    title: 'Список категорий',
+    title: 'Главная',
     path: '',
     loadComponent: () => import('@pages').then((m) => m.MainPage),
-    // data: { breadcrumb: 'Главная' },
   },
   {
     title: 'Подробная информация',
-    path: 'product/:id',
+    path: 'adverts',
+    loadComponent: () => import('@pages').then((m) => m.AdvertsPage),
+    data: { breadcrumb: 'Доска объявлений' },
+  },
+  {
+    title: 'Подробная информация',
+    path: 'adverts/:id',
     canActivate: [authGuard],
-    loadComponent: () => import('@pages').then((m) => m.ProductDetailPage),
+    loadComponent: () => import('@pages').then((m) => m.AdvertDetailPage),
     data: { breadcrumb: 'Подробная информация' },
   },
   {
     title: 'Новое объявление',
     path: 'new-advert',
     canActivate: [authGuard],
-    loadComponent: () => import('@pages').then((m) => m.NewAdverPage),
+    loadComponent: () => import('@pages').then((m) => m.NewAdvertPage),
     data: { breadcrumb: 'Новое объявление' },
   },
   {

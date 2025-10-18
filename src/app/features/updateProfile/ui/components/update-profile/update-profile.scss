@@ -1,0 +1,38 @@
+.edit-button-wrapper {
+  display: flex;
+  gap: 4px;
+}
+
+.update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__inputs-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    input {
+      min-width: 244px;
+    }
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__error-message {
+    position: absolute;
+    left: 0;
+    top: 32px;
+  }
+
+  &_required {
+    color: var(--danger-500);
+    font:var(--T2)
+  }
+}

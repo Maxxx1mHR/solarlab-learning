@@ -11,7 +11,7 @@ import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 
 import { CommentNode } from '../../../../advertDetail/domain/advert.comments';
-import { UserStoreService } from '../../../../../entries/users/user.store.service';
+import { UserStoreService } from '../../../../../entities/users/user.store.service';
 import { CommentService } from '../../../services/comment.service';
 import { ActivatedRoute } from '@angular/router';
 import { AdvertSelectedStoreService } from '@features';
@@ -52,7 +52,7 @@ export class CommentTree {
   }
 
   get currentUserId(): string | undefined {
-    return this.userStoreService.getUser()?.userId;
+    return this.userStoreService.user()?.userId;
   }
 
   startEdit(node: CommentNode) {

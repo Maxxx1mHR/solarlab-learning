@@ -1,0 +1,22 @@
+<div class="product-card">
+  <img
+    class="product-card__image"
+    [src]="advert.imageSrc"
+    [alt]="advert.title"
+    width="306"
+    height="240"
+  />
+  <br />
+  <a
+    routerLink="/adverts/{{ advert.id }}"
+    class="product-card__title"
+    (click)="this.onSelectProduct(advert)"
+  >
+    {{ advert.title }}
+  </a>
+  <h6 class="product-card__price">
+    {{ advert.price | currency: "RUB" : "symbol-narrow" : "1.0-0" }}
+  </h6>
+  <div class="product-card__location">{{ advert.location }}</div>
+  <div class="product-card__date">{{ advert.publishDate }}</div>
+</div>

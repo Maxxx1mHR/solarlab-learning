@@ -12,7 +12,6 @@ export interface AdvertDetail {
     location: string;
     price: string;
     imageSrc: Images[];
-    // imagesIds: string[];
     category: {
       id: string;
       name: string;
@@ -24,3 +23,5 @@ export interface Images {
   src: string;
   id: string;
 }
+
+export interface AdvertForm {}

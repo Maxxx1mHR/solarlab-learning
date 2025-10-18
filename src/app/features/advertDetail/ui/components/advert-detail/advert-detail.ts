@@ -1,23 +1,16 @@
 import {
   Component,
   computed,
-  effect,
   inject,
   model,
   OnInit,
+  signal,
 } from '@angular/core';
 import { Button } from 'primeng/button';
-import { AdvertSelectedStoreService } from '../../../services/advert-selected.store.service';
 import { CurrencyPipe } from '@angular/common';
-import { AdvertDetailService } from '../../../services/advert.detail.service';
-import { AdvertDetailStoreService } from '../../../services/advert.detail.store.service';
 import { Skeleton } from 'primeng/skeleton';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GalleriaModule } from 'primeng/galleria';
-import { LoginForm } from '../../../../../shared/components/smart/header/login-form/login-form';
-import { Modal } from '../../../../../shared/components/dump/modal/modal';
-import { PhonePipe } from '../../../../../shared/pipes/phone-pipe';
-import { CommentTree } from '../../../../advertComments/ui/components/comment-tree/comment-tree';
 import {
   FormBuilder,
   FormControl,
@@ -26,15 +19,25 @@ import {
   Validators,
 } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
-import { UserStoreService } from '../../../../../entries/users/user.store.service';
-import { AdvertService } from '../../../../myAdverts/service/advert.service';
 import { AutoComplete } from 'primeng/autocomplete';
 import { CascadeSelect } from 'primeng/cascadeselect';
 import { FileUpload } from 'primeng/fileupload';
 import { InputMask } from 'primeng/inputmask';
 import { InputNumber } from 'primeng/inputnumber';
 import { Textarea } from 'primeng/textarea';
-import { AdvertCreateForm } from '../../../../advertCreateForm/ui/components/advert-create-form/advert-create-form';
+import {
+  AdvertDetailService,
+  AdvertDetailStoreService,
+  AdvertForm,
+  AdvertFormApiService,
+  AdvertSelectedStoreService,
+  CommentTree,
+} from '@features';
+import { catchError, finalize, forkJoin, of } from 'rxjs';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { responsiveOptions } from './contants';
+import { Modal, PhonePipe } from '@shared';
+import { UserStoreService } from '@entities';
 
 @Component({
   selector: 'app-advert-detail',
@@ -43,7 +46,6 @@ import { AdvertCreateForm } from '../../../../advertCreateForm/ui/components/adv
     CurrencyPipe,
     Skeleton,
     GalleriaModule,
-    LoginForm,
     Modal,
     PhonePipe,
     CommentTree,
@@ -55,87 +57,76 @@ import { AdvertCreateForm } from '../../../../advertCreateForm/ui/components/adv
     InputMask,
     InputNumber,
     Textarea,
-    AdvertCreateForm,
+    AdvertForm,
+    ProgressSpinner,
+    RouterLink,
   ],
   templateUrl: './advert-detail.html',
   styleUrl: './advert-detail.scss',
   standalone: true,
 })
 export class AdvertDetail implements OnInit {
-  advertSelectedStoreService = inject(AdvertSelectedStoreService);
-  advertDetailService = inject(AdvertDetailService);
-  advertDetailStoreService = inject(AdvertDetailStoreService);
-  private activatedRoute = inject(ActivatedRoute);
-  userStoreService = inject(UserStoreService);
-  advertService = inject(AdvertService);
+  // Services
+  private readonly advertSelectedStoreService = inject(
+    AdvertSelectedStoreService,
+  );
+  private readonly advertDetailService = inject(AdvertDetailService);
+  readonly advertDetailStoreService = inject(AdvertDetailStoreService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly userStoreService = inject(UserStoreService);
+  private readonly advertService = inject(AdvertFormApiService);
 
-  activeEditId = model<string | null>(null);
-  activeReplyId = model<string | null>(null);
+  // Variables
+  readonly advertLoading = signal(false);
+  readonly deleteLoading = signal(false);
+  readonly createCommentLoading = signal(false);
+  readonly activeEditId = model<string | null>(null);
+  readonly activeReplyId = model<string | null>(null);
+  readonly userId = this.userStoreService.user()?.userId;
+  private readonly id = this.activatedRoute.snapshot.params['id'];
 
-  userId = this.userStoreService.getUser()?.userId;
+  private readonly advertId =
+    this.advertDetailStoreService.advertDetail()?.advert.id ?? this.id;
 
-  public id = this.activatedRoute.snapshot.params['id'];
+  readonly isPhoneModalOpen = signal(false);
+  isAdvertEdit = false;
 
-  advertId = this.advertDetailStoreService.advertDetail()?.advert.id ?? this.id;
-
-  isPhoneModalOpen = false;
-
-  isEdit = false;
+  readonly responsiveOptions = responsiveOptions;
 
   createCommentForm: FormGroup;
-
-  updateAdvertForm: FormGroup;
-
-  responsiveOptions = [
-    {
-      breakpoint: '1300px',
-      numVisible: 4,
-    },
-    {
-      breakpoint: '575px',
-      numVisible: 1,
-    },
-  ];
 
   constructor(private formBuilder: FormBuilder) {
     this.createCommentForm = formBuilder.group({
       createComment: new FormControl('', [Validators.required]),
     });
+  }
 
-    const advert = this.advertDetailStoreService.advertDetail()?.advert;
+  ngOnInit() {
+    const id = this.advertSelectedStoreService.advertSelected()?.id ?? this.id;
+    this.advertLoading.set(true);
+    forkJoin({
+      advert: this.advertDetailService.getAdvert(id).pipe(
+        catchError((err) => {
+          console.error('getAdvert error', err);
+          return of(null);
+        }),
+      ),
+      comments: this.advertDetailService.getAdvertComments(id).pipe(
+        catchError((err) => {
+          console.error('getAdvertComments error', err);
+          return of(null);
+        }),
+      ),
+    })
+      .pipe(finalize(() => this.advertLoading.set(false)))
+      .subscribe();
+  }
 
-    console.log(advert);
-
-    this.updateAdvertForm = formBuilder.group({
-      name: new FormControl('123', [Validators.required]),
-      description: new FormControl(''),
-      images: new FormControl(''),
-      cost: new FormControl(0, [Validators.required]),
-      email: new FormControl(''),
-      phone: new FormControl('', [Validators.required]),
-      location: new FormControl('', [Validators.required]),
-      categoryId: new FormControl('', [Validators.required]),
-    });
-
-    effect(() => {
-      const detail = this.advertDetailStoreService.advertDetail(); // signal
-      if (!detail) return;
-
-      const a = detail.advert;
-      this.updateAdvertForm.reset(
-        {
-          name: a.title ?? '',
-          description: a.description ?? '',
-          // images: a.imagesIds ?? [],
-          // cost: a.cost ?? 0,
-          // email: a.email ?? '',
-          // phone: a.phone ?? '',
-          // location: a.location ?? '',
-          // categoryId: a.category?.id ?? '',
-        },
-        { emitEvent: false },
-      );
-    });
+  openPhoneModal() {
+    this.isPhoneModalOpen.set(true);
+  }
+  editAdvert() {
+    this.isAdvertEdit = true;
   }
 
   galleryImages = computed(() => {
@@ -148,20 +139,15 @@ export class AdvertDetail implements OnInit {
   });
 
   deleteAdvert() {
-    this.advertService.deleteMyAdvert(this.advertId).subscribe();
-  }
-
-  ngOnInit() {
-    console.log('!!!', this.userStoreService.getUser());
-
-    const id = this.advertSelectedStoreService.advertSelected()?.id ?? this.id;
-    if (id) {
-      this.advertDetailService.getAdvert(id).subscribe();
-      this.advertDetailService.getAdvertComments(id).subscribe();
-    }
+    this.deleteLoading.set(true);
+    this.advertService
+      .deleteAdvert(this.advertId)
+      .pipe(finalize(() => this.deleteLoading.set(false)))
+      .subscribe();
   }
 
   submitCreateComment() {
+    this.createCommentLoading.set(true);
     const advertId =
       this.advertSelectedStoreService.advertSelected()?.id ?? this.id;
     const comment = this.createCommentForm.get('createComment')?.value;
@@ -169,12 +155,11 @@ export class AdvertDetail implements OnInit {
       next: () => {
         const id =
           this.advertSelectedStoreService.advertSelected()?.id ?? this.id;
-        this.advertDetailService.getAdvertComments(id).subscribe();
+        this.advertDetailService
+          .getAdvertComments(id)
+          .pipe(finalize(() => this.createCommentLoading.set(false)))
+          .subscribe();
       },
     });
-  }
-
-  updateAdvertSubmit() {
-    console.log('submit update');
   }
 }

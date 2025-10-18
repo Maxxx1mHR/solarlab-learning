@@ -1,27 +1,27 @@
-<div class="main">
-  <div class="container">
-    <h4 class="main__title">
-      <!--      Алексей за использовать if else if else ругал. Не знаю как лучше. Выглядит читаемо)-->
-      @if (advertSearchStoreService.isLoading()) {
-        Поиск...
-      } @else if (advertSearchStoreService.isSearched()) {
-        Результаты поиска
-      } @else {
-        Выполните поиск для получения списка объявлений
-      }
-    </h4>
+<!--<div class="main">-->
+<!--  <div class="container">-->
+<!--    <h4 class="main__title">-->
+<!--      &lt;!&ndash;      Алексей за использовать if else if else ругал. Не знаю как лучше. Выглядит читаемо)&ndash;&gt;-->
+<!--      @if (advertSearchStoreService.isLoading()) {-->
+<!--        Поиск...-->
+<!--      } @else if (advertSearchStoreService.isSearched()) {-->
+<!--        Результаты поиска-->
+<!--      } @else {-->
+<!--        Выполните поиск для получения списка объявлений-->
+<!--      }-->
+<!--    </h4>-->
 
-    @if (advertSearchStoreService.isLoading()) {
-      <div class="loader-wrapper">
-        <p-progress-spinner ariaLabel="loading" />
-      </div>
-    } @else if (
-      advertSearchStoreService.advertSearchResult()?.length === 0 &&
-      advertSearchStoreService.isSearched()
-    ) {
-      <app-not-found />
-    } @else {
-      <app-product-list />
-    }
-  </div>
-</div>
+<!--    @if (advertSearchStoreService.isLoading()) {-->
+<!--      <div class="loader-wrapper">-->
+<!--        <p-progress-spinner ariaLabel="loading" />-->
+<!--      </div>-->
+<!--    } @else if (-->
+<!--      advertSearchStoreService.advertSearchResult()?.length === 0 &&-->
+<!--      advertSearchStoreService.isSearched()-->
+<!--    ) {-->
+<!--      <app-not-found />-->
+<!--    } @else {-->
+<!--      <app-product-list />-->
+<!--    }-->
+<!--  </div>-->
+<!--</div>-->

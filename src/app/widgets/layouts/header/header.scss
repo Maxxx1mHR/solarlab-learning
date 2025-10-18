@@ -1,0 +1,38 @@
+@use "../../../styles/abstract/mixins" as media;
+
+.header {
+  padding: 10px;
+  background-color: var(--default);
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  &__wrapper-buttons {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__logo {
+    cursor: pointer;
+    color: var(--base-white);
+    text-decoration: none;
+    opacity: 0.4;
+    transition: opacity 0.4s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+
+}
+
+
+.popover {
+  display: flex;
+  flex-direction: column;
+}
+

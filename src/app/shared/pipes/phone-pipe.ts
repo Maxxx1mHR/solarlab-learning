@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PhonePipe implements PipeTransform {
   transform(value: string, ...args: unknown[]): unknown {
-    // const formatFirstChar = value.replace(/8/, '+7');
     const country = '+7';
     const part1 = value.slice(1, 4);
     const part2 = value.slice(4, 7);

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { finalize, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { AdvertSelectedStoreService } from '@features';
 import { AdvertApiService, ImagesApiService } from '@infrastructure';
 import { mapAdvertResponseDtoToAdvertDetail } from '../adapters/advert-detail.adapter';
@@ -18,8 +18,6 @@ export class AdvertDetailService {
   advertDetailStoreService = inject(AdvertDetailStoreService);
 
   getAdvert(id: string) {
-    this.advertDetailStoreService.setLoading(true);
-
     return this.advertApiService.getAdvert(id).pipe(
       map((advertDto) => mapAdvertResponseDtoToAdvertDetail(advertDto)),
       switchMap((advert) => {
@@ -28,7 +26,6 @@ export class AdvertDetailService {
         );
 
         if (advert.advert.imageSrc.length) {
-          console.log(advert.advert.imageSrc);
           return forkJoin(request).pipe(
             map((response) => {
               // const images = response.map((img) => URL.createObjectURL(img));
@@ -64,10 +61,8 @@ export class AdvertDetailService {
         }
       }),
       tap((result) => {
-        console.log('???', result);
         this.advertDetailStoreService.setAdvertDetail(result);
       }),
-      finalize(() => this.advertDetailStoreService.setLoading(false)),
     );
   }
 
@@ -84,13 +79,11 @@ export class AdvertDetailService {
   }
 
   getAdvertComments(id: string) {
-    this.advertDetailStoreService.setCommentsLoading(true);
     return this.advertApiService.getAdvertComments(id).pipe(
       map((comments) => this.mapArr(comments)),
       tap((comment) =>
         this.advertDetailStoreService.setAdvertComments(comment),
       ),
-      finalize(() => this.advertDetailStoreService.setCommentsLoading(false)),
     );
   }
 

@@ -11,16 +11,6 @@ export class AuthorizationStoreService {
 
   private _authToken = signal<string>('');
 
-  authToken = computed(() => this._authToken());
-
-  isLoading = computed(() => this.state().isLoading);
-
-  setLoading(loading: boolean) {
-    this.state.update((currentState) => ({
-      ...currentState,
-      isLoading: loading,
-    }));
-  }
   setAuthToken(token: string) {
     localStorage.setItem('access_token', token);
     this._authToken.set(token);

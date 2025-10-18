@@ -1,0 +1,103 @@
+<header>
+  <div class="header">
+    <div class="container">
+      <div class="header__wrapper">
+        <div class="header__wrapper-buttons">
+          <img
+            src="assets/images/solarlab-logo.svg"
+            height="30px"
+            class="header__logo"
+            routerLink="/"
+          />
+          <div class="header__navigation">
+            <p-button
+              label="Объявления"
+              routerLink="/adverts"
+              severity="primary"
+              variant="text"
+            />
+          </div>
+        </div>
+        @if (authorizationSate.getState()) {
+          <div class="header__wrapper-buttons">
+            <p-button
+              (click)="popoverSettings.toggle($event)"
+              severity="primary"
+              variant="text"
+              class="header-top__button-login"
+            >
+              <ng-template pTemplate>
+                <i class="pi pi-user"></i>
+                <span>{{ userStore.user()?.name }}</span>
+                <i class="pi pi-chevron-down"></i>
+              </ng-template>
+            </p-button>
+            <p-button
+              label="Новое объявление"
+              icon="pi pi-plus"
+              iconPos="right"
+              routerLink="/new-advert"
+            />
+          </div>
+        } @else {
+          <div class="header__wrapper-buttons">
+            <p-button
+              (click)="isLoginModalOpen = true"
+              label="Войти"
+              severity="primary"
+              variant="text"
+              icon="pi pi-user"
+              class="header-top__button-login"
+            />
+            <p-button
+              (click)="isRegisterModalOpen = true"
+              label="Зарегистрироваться"
+              severity="primary"
+              variant="text"
+              icon="pi pi-user-plus"
+              class="header-top__button-login"
+            />
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <app-breadcrumbs />
+</header>
+<p-popover #popoverSettings>
+  <div class="popover">
+    <p-button
+      label="Мои объявления"
+      variant="text"
+      severity="secondary"
+      routerLink="my-adverts"
+    />
+    <p-button
+      label="Профиль"
+      variant="text"
+      severity="secondary"
+      routerLink="profile"
+    />
+    @if (userStore.user()?.role === "Admin") {
+      <p-button
+        label="Администрирование"
+        variant="text"
+        severity="secondary"
+        routerLink="user-management"
+      />
+    }
+    <p-button
+      label="Выйти"
+      variant="text"
+      severity="danger"
+      (click)="onLogout()"
+    />
+  </div>
+</p-popover>
+
+<app-modal [(visible)]="isLoginModalOpen" header="Авторизация">
+  <app-login-form (closeModal)="isLoginModalOpen = false" />
+</app-modal>
+<app-modal [(visible)]="isRegisterModalOpen" header="Регистрация">
+  <app-register-form (closeModal)="isRegisterModalOpen = false" />
+</app-modal>
