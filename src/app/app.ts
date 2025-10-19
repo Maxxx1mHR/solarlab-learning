@@ -4,10 +4,12 @@ import { Toast } from 'primeng/toast';
 import { AuthorizationService } from '@core';
 import { Footer } from './widgets/layouts/footer/footer';
 import { Header } from '@widgets';
+import { Ripple } from 'primeng/ripple';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Toast, Footer, Header],
+  imports: [RouterOutlet, Toast, Footer, Header, Ripple, ButtonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true,

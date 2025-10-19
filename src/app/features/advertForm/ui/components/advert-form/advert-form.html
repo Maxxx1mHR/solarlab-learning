@@ -41,34 +41,30 @@
 
     <div class="field">
       <label for="description"> Описание </label>
-      <textarea
-        id="description"
-        formControlName="description"
-        pTextarea
-        fluid
-        class="field__description"
-        placeholder="Расскажите подробнее о товаре или услуге"
-      ></textarea>
+      <app-validation-message>
+        <textarea
+          id="description"
+          formControlName="description"
+          pTextarea
+          fluid
+          class="field__description"
+          placeholder="Расскажите подробнее о товаре или услуге"
+        ></textarea>
+      </app-validation-message>
     </div>
     <div class="field">
       <label for="location">
         Адрес (место проведения сделки) <span class="field_required">*</span>
       </label>
-      <p-autocomplete
-        formControlName="location"
-        (completeMethod)="search($event)"
-        [suggestions]="suggestions()"
-        placeholder="Начните вводить адрес"
-      />
+      <app-validation-message>
+        <p-autocomplete
+          formControlName="location"
+          (completeMethod)="search($event)"
+          [suggestions]="suggestions()"
+          placeholder="Начните вводить адрес"
+        />
+      </app-validation-message>
     </div>
-
-    <!--  <div class="existing-grid">-->
-    <!--    @for (let it of existingImages, index; track it) {-->
-    <!--      <img [src]="it.previewUrl" alt="" />-->
-    <!--      <button pButton size="small" icon="pi pi-times" (click)="removeExisting(i)"></button>-->
-    <!--    }-->
-
-    <!--  </div>-->
 
     <div class="field__image">
       <p-fileupload
@@ -111,40 +107,46 @@
 
     <div class="field">
       <label for="cost"> Цена <span class="field_required">*</span> </label>
-      <p-inputNumber
-        formControlName="cost"
-        inputId="cost"
-        mode="currency"
-        currency="RUB"
-        locale="ru-RU"
-        placeholder="0 ₽"
-      />
+      <app-validation-message>
+        <p-inputNumber
+          formControlName="cost"
+          inputId="cost"
+          mode="currency"
+          currency="RUB"
+          locale="ru-RU"
+          placeholder="0 ₽"
+        />
+      </app-validation-message>
     </div>
     <div class="field">
       <label for="email"> Электорнная почта </label>
-      <input
-        id="email"
-        formControlName="email"
-        pInputText
-        placeholder="Введите адрес электронной почты"
-      />
+      <app-validation-message>
+        <input
+          id="email"
+          formControlName="email"
+          pInputText
+          placeholder="Введите адрес электронной почты"
+        />
+      </app-validation-message>
     </div>
     <div class="field">
       <label for="phone">
         Номер телефона <span class="field_required">*</span>
       </label>
-      <p-inputmask
-        mask="+7 (999) 999-99-99"
-        id="phone"
-        formControlName="phone"
-        placeholder="Введите номер телефона"
-      />
+      <app-validation-message>
+        <p-inputmask
+          mask="+7 (999) 999-99-99"
+          id="phone"
+          formControlName="phone"
+          placeholder="Введите номер телефона"
+        />
+      </app-validation-message>
     </div>
 
     <div class="button-action-wrapper">
       <p-button
         [label]="isEdit() ? 'Обновить объявление' : 'Разместить объявление'"
-        [disabled]="advertForm.invalid"
+        [disabled]="advertForm.invalid || uploadedFilesComputed() === 0"
         [loading]="formSendLoading()"
         type="submit"
       />

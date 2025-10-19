@@ -5,11 +5,16 @@
   &__detail {
     display: flex;
     gap: 24px;
-    //justify-content: center;
 
     @include media.media-desktop-xl {
       flex-wrap: wrap;
     }
+  }
+
+  &__detail-image-wrapper {
+    display: flex;
+  flex-direction: column;
+    width: 100%;
   }
 
     &__wrapper-button-action {
@@ -33,6 +38,7 @@
         max-width: 100%;
         min-width: unset;
       }
+
     }
 
     //&__block {
@@ -43,12 +49,16 @@
       margin-bottom: 40px;
       display: block;
       .p-button {
-        width: 100%;
+        //width: 100%;
+        width: 416px;
         height: 68px;
         font: var(--T1);
 
         @include media.media-desktop-xl {
           width: 416px;
+        }
+        @include media.media-mobile-sm {
+          width:100%;
         }
 
       }
@@ -105,4 +115,10 @@
   display: flex;
   height: calc(100vh - 290px);
   align-items: center;
+}
+
+.modal__button-wrapper {
+  display: flex;
+  justify-content: end;
+  gap: 6px;
 }

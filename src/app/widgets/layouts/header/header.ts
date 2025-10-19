@@ -70,6 +70,10 @@ export class Header {
   isLoginModalOpen = false;
   isRegisterModalOpen = false;
 
+  onHide() {
+    this.popoverSettings.hide();
+  }
+
   onLogout() {
     this.authorizationService.logout();
     this.popoverSettings.hide();

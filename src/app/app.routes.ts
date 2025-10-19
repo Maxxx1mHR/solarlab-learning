@@ -38,7 +38,7 @@ export const routes: Routes = [
     title: 'Профиль',
     path: 'profile',
     canActivate: [authGuard],
-    loadComponent: () => import('@pages').then((m) => m.Profile),
+    loadComponent: () => import('@pages').then((m) => m.ProfilePage),
     data: { breadcrumb: 'Профиль' },
   },
   {

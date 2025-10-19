@@ -5,10 +5,10 @@
     [rows]="10"
     [tableStyle]="{ 'min-width': '50rem' }"
     [scrollable]="true"
-    scrollHeight="calc(100vh - 310px)"
+    scrollHeight="calc(100vh - 314px)"
     [rowsPerPageOptions]="[5, 10, 20]"
     [(selection)]="selectedUsers"
-    paginatorStyleClass="test"
+    class="table__container"
   >
     <ng-template #caption>
       <div class="table__actions-wrapper">
@@ -29,7 +29,7 @@
           size="small"
           icon="pi pi-trash"
           iconPos="right"
-          (click)="isDeleteModalOpen = true"
+          (click)="isDeleteModalOpen.set(true)"
           [disabled]="!selectedUsers.length"
         />
       </div>
@@ -70,11 +70,17 @@
     {{ selectedNames() }}
   </div>
   <div class="modal__button-wrapper">
-    <p-button label="Да" severity="danger" (click)="submitDelete()" />
+    <p-button
+      label="Удалить"
+      severity="danger"
+      (click)="submitDelete()"
+      [loading]="deleteLoading()"
+    />
     <p-button
       label="Отменить"
       severity="secondary"
-      (click)="isDeleteModalOpen = false"
+      (click)="isDeleteModalOpen.set(false)"
+      [disabled]="deleteLoading()"
     />
   </div>
 </app-modal>

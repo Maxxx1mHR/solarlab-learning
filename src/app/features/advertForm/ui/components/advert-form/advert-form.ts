@@ -45,7 +45,9 @@ import { CategoriesService, CategoryNode } from '@entities';
 import { mapAdvertFormToDto } from '../../../adapters/advert.adapter';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { ValidationMessage } from '@shared';
-import { finalize } from 'rxjs';
+import { finalize, switchMap } from 'rxjs';
+import { AuthorizationService } from '@core';
+import { AdvertDetailService } from '../../../../advertDetail';
 
 @Component({
   selector: 'app-advert-form',
@@ -75,12 +77,14 @@ export class AdvertForm implements OnInit {
   advertDetailStoreService = inject(AdvertDetailStoreService);
   private advertService = inject(MyAdvertService);
   private activatedRoute = inject(ActivatedRoute);
+  readonly authorizationService = inject(AuthorizationService);
 
   private dadataService = inject(DadataService);
   private dadataStoreService = inject(DadataStoreService);
   categoriesStoreService = inject(CategoriesStoreService);
 
   private readonly categoriesService = inject(CategoriesService);
+  private readonly advertDetailService = inject(AdvertDetailService);
 
   // Variables
   MAX_COUNT_IMAGE = 10;
@@ -103,6 +107,8 @@ export class AdvertForm implements OnInit {
   uploadedFiles = signal<File[]>([]);
   // uploadedFiles: File[] = [];
 
+  uploadedFilesComputed = computed(() => new Set(this.uploadedFiles()).size);
+
   readonly fileLimit = computed(
     () =>
       this.MAX_COUNT_IMAGE -
@@ -110,7 +116,6 @@ export class AdvertForm implements OnInit {
       new Set(this.uploadedFiles()).size,
   );
   onSelect(e: FileSelectEvent) {
-    console.log('1,', e);
     this.uploadedFiles.update((arr) => [...arr, ...e.currentFiles]);
   }
   onRemove(e: FileRemoveEvent) {
@@ -179,7 +184,13 @@ export class AdvertForm implements OnInit {
         this.editAdvertId,
         mapAdvertFormToDto(this.advertForm, this.uploadedFiles()),
       )
-      .pipe(finalize(() => this.formSendLoading.set(false)))
+      .pipe(
+        switchMap(() => this.advertDetailService.getAdvert(this.editAdvertId)),
+        finalize(() => {
+          this.formSendLoading.set(false);
+          this.isEdit.set(false);
+        }),
+      )
       .subscribe();
   }
 

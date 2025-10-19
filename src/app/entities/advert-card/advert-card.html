@@ -11,6 +11,7 @@
     routerLink="/adverts/{{ advert.id }}"
     class="product-card__title"
     (click)="this.onSelectProduct(advert)"
+    [class.product-card__title_disabled]="!userStoreService.user()?.role"
   >
     {{ advert.title }}
   </a>
@@ -18,5 +19,7 @@
     {{ advert.price | currency: "RUB" : "symbol-narrow" : "1.0-0" }}
   </h6>
   <div class="product-card__location">{{ advert.location }}</div>
-  <div class="product-card__date">{{ advert.publishDate }}</div>
+  <div class="product-card__date">
+    {{ advert.publishDate | DateCustomPipe }}
+  </div>
 </div>

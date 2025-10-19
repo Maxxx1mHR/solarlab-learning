@@ -35,9 +35,9 @@ import {
 } from '@features';
 import { catchError, finalize, forkJoin, of } from 'rxjs';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { responsiveOptions } from './contants';
 import { Modal, PhonePipe } from '@shared';
 import { UserStoreService } from '@entities';
+import { responsiveOptions } from './contants';
 
 @Component({
   selector: 'app-advert-detail',
@@ -83,6 +83,7 @@ export class AdvertDetail implements OnInit {
   readonly activeEditId = model<string | null>(null);
   readonly activeReplyId = model<string | null>(null);
   readonly userId = this.userStoreService.user()?.userId;
+
   private readonly id = this.activatedRoute.snapshot.params['id'];
 
   private readonly advertId =
@@ -90,6 +91,8 @@ export class AdvertDetail implements OnInit {
 
   readonly isPhoneModalOpen = signal(false);
   isAdvertEdit = false;
+
+  isDeleteModalOpen = signal(false);
 
   readonly responsiveOptions = responsiveOptions;
 

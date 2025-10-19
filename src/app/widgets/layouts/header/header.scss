@@ -1,4 +1,5 @@
-@use "../../../styles/abstract/mixins" as media;
+//@use "../../../styles/abstract/mixins" as media;
+@use "mixins" as media;
 
 .header {
   padding: 10px;
@@ -8,6 +9,13 @@
     display: flex;
     justify-content: space-between;
     gap: 24px;
+
+    @include media.media-mobile-sm {
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
   }
 
   &__wrapper-buttons {

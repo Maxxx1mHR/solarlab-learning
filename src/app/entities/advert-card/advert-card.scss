@@ -11,6 +11,10 @@
     word-break: break-all;
     text-decoration: none;
     font: var(--h6);
+
+    &_disabled {
+      cursor: default;
+    }
   }
 
   &__price {

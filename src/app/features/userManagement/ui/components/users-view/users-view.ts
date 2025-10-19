@@ -11,6 +11,7 @@ import { Paginator, PaginatorState } from 'primeng/paginator';
 import { Button } from 'primeng/button';
 import { LoginForm } from '../../../../auth/ui/components/login-form/login-form';
 import { Modal } from '../../../../../shared/components/modal/modal';
+import { finalize, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-users-view',
@@ -38,7 +39,9 @@ export class UsersView implements OnInit {
   first = 0;
   rows = 10;
   searchString = '';
-  isDeleteModalOpen = false;
+  isDeleteModalOpen = signal(false);
+
+  readonly deleteLoading = signal(false);
 
   searchedUser() {
     const searchString = this.searchString.trim().toLowerCase();
@@ -50,6 +53,10 @@ export class UsersView implements OnInit {
 
   selectedNames() {
     return this.selectedUsers.map((user) => user.name).join(', ');
+  }
+
+  loadUsers() {
+    this.userService.getUsers().subscribe((users) => (this.users = users));
   }
 
   onSearch(searchString: string) {
@@ -67,16 +74,20 @@ export class UsersView implements OnInit {
   }
 
   submitDelete() {
+    this.deleteLoading.set(true);
     const ids = this.selectedUsers.map((user) => user.id);
-    this.userService.deleteUser(ids).subscribe();
+    this.userService.deleteUser(ids).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.selectedUsers = [];
+        this.deleteLoading.set(false);
+        this.isDeleteModalOpen.set(false);
+        this.first = 0;
+      },
+    });
   }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe({
-      next: (response) => {
-        this.users = response;
-        this.isDeleteModalOpen = false;
-      },
-    });
+    this.loadUsers();
   }
 }

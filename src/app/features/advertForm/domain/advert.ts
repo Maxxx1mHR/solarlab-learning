@@ -5,7 +5,7 @@ export type AvertCreateForm = FormGroup<{
   name: FormControl<string>;
   description: FormControl<string | null>;
   images: FormControl<File[] | null>;
-  cost: FormControl<number>;
+  cost: FormControl<number | null>;
   email: FormControl<string | null>;
   phone: FormControl<string>;
   location: FormControl<string>;

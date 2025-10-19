@@ -1,6 +1,10 @@
 .adverts {
   margin-left: -10px;
   margin-right: -10px;
+
+  &__header-wrapper {
+    padding: 0 10px
+  }
   &__title {
     margin-bottom: 24px;
   }

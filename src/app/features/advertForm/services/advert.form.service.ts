@@ -31,10 +31,13 @@ export class AdvertFormService {
         Validators.minLength(5),
         Validators.maxLength(255),
       ]),
-      description: this.fb.control(''),
+      description: this.fb.control('', Validators.maxLength(255)),
       images: this.fb.control<File[]>([]), // TODO в форме есть но не управляется ей.
-      cost: this.fb.nonNullable.control(0, Validators.required),
-      email: this.fb.control(''),
+      cost: this.fb.nonNullable.control<number | null>(
+        null,
+        Validators.required,
+      ),
+      email: this.fb.control('', Validators.email),
       phone: this.fb.nonNullable.control('', Validators.required),
       location: this.fb.nonNullable.control('', Validators.required),
       categoryId: this.fb.control<CategoryNode | null>(null, [

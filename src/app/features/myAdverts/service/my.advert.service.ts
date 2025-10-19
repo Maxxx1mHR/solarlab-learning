@@ -25,7 +25,6 @@ export class MyAdvertService {
   private router = inject(Router);
 
   getMyAdverts(adverts: Advert[]) {
-    console.log('!!!');
     const request = adverts.map((advert) =>
       this.advertApiService
         .getAdvert(advert.id)
