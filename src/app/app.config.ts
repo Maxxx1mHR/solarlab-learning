@@ -1,6 +1,7 @@
 import {
   APP_INITIALIZER,
   ApplicationConfig,
+  LOCALE_ID,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
@@ -14,14 +15,16 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MessageService } from 'primeng/api';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { AuthorizationService } from '@core';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, of } from 'rxjs';
+import '@angular/common/locales/global/ru';
 
 // function initAuth(auth: AuthorizationService) {
 //   return () => firstValueFrom(auth.currentUser());
 // }
 
 function initAuth(auth: AuthorizationService) {
-  return () => auth.currentUser();
+  return () =>
+    firstValueFrom(auth.currentUser()?.pipe(catchError(() => of(null))));
 }
 
 export const appConfig: ApplicationConfig = {
@@ -44,5 +47,6 @@ export const appConfig: ApplicationConfig = {
       deps: [AuthorizationService],
       multi: true,
     },
+    { provide: LOCALE_ID, useValue: 'ru-RU' },
   ],
 };

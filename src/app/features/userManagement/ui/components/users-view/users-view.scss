@@ -1,15 +1,51 @@
+@use "mixins" as media;
 
 .pagination {
   position: absolute;
-  bottom: 68px;
+  bottom: 76px;
   padding: 0;
 }
 
 .table {
+  ::ng-deep {
+    .p-datatable-table-container {
+      @include media.media-mobile-sm {
+        max-height: calc(-376px + 100vh) !important;
+        overflow: auto;
+      }
+    }
+  }
+  ::ng-deep {
+    .p-paginator-rpp-dropdown {
+      @include media.media-mobile-sm {
+        display: none;
+      }
+    }
+    ::ng-deep {
+        .p-paginator-last {
+          @include media.media-mobile-sm {
+          display: none;
+        }
+      }
+    }
+    ::ng-deep {
+      .p-paginator-first {
+        @include media.media-mobile-sm {
+          display: none;
+        }
+      }
+    }
+
+  }
+
   &__actions-wrapper {
     display: flex;
     gap: 20px;
     align-items: center;
+    @include media.media-mobile-sm {
+      flex-direction: column;
+      gap: 4px;
+    }
   }
 }
 

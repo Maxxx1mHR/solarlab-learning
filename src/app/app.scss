@@ -1,5 +1,12 @@
+@use "mixins" as media;
+
 .wrapper {
   padding: 10px;
-  height: calc(100vh - 158px);
+  height: calc(100vh - 172px);
   overflow: auto;
+
+  @include media.media-mobile-sm {
+    height: calc(100vh - 208px);
+
+  }
 }

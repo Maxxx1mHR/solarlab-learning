@@ -68,8 +68,16 @@
 
         @if (currentUserId === node.user.id && activeEditId() !== node.id) {
           <div class="comments__actions">
-            <i class="pi pi-pencil" (click)="startEdit(node)"></i>
-            <i class="pi pi-trash" (click)="deleteComment(node.id)"></i>
+            <p-button
+              icon="pi pi-pencil"
+              severity="secondary"
+              (click)="startEdit(node)"
+            />
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              (click)="deleteComment(node.id)"
+            />
           </div>
         }
       </div>

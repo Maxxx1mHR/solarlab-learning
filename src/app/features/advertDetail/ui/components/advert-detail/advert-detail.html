@@ -16,7 +16,7 @@
             severity="danger"
             icon="pi pi-trash"
             iconPos="right"
-            (click)="deleteAdvert()"
+            (click)="isDeleteModalOpen.set(true)"
             size="small"
             [loading]="deleteLoading()"
           />
@@ -30,29 +30,27 @@
         </div>
       }
       <div class="advert__detail">
-        <div>
+        <div class="advert__detail-image-wrapper">
           <h3 class="advert__title">
             {{ advertDetailStoreService.advertDetail()?.advert?.title }}
           </h3>
-          <div>
-            <p-galleria
-              [value]="galleryImages()"
-              [responsiveOptions]="responsiveOptions"
-              [containerStyle]="{ 'width: 100%, max-width': '856px' }"
-              [numVisible]="5"
-              [showThumbnails]="galleryImages().length > 1"
-            >
-              <ng-template #item let-item>
-                <img [src]="item.itemImageSrc" style="width: 100%" />
-              </ng-template>
-              <ng-template #thumbnail let-item>
-                <img
-                  [src]="item.thumbnailImageSrc"
-                  style="width: 112px; height: 84px"
-                />
-              </ng-template>
-            </p-galleria>
-          </div>
+          <p-galleria
+            [value]="galleryImages()"
+            [responsiveOptions]="responsiveOptions"
+            [containerStyle]="{ 'width: 100%, max-width': '856px' }"
+            [numVisible]="5"
+            [showThumbnails]="galleryImages().length > 1"
+          >
+            <ng-template #item let-item>
+              <img [src]="item.itemImageSrc" style="width: 100%" />
+            </ng-template>
+            <ng-template #thumbnail let-item>
+              <img
+                [src]="item.thumbnailImageSrc"
+                style="width: 112px; height: 84px"
+              />
+            </ng-template>
+          </p-galleria>
         </div>
         <div>
           <div class="advert__description">
@@ -142,6 +140,27 @@
         <li>Игнорируйте ссылки на оплату, которые присылает собеседник</li>
         <li>Никому не говорите коды из смс и пуш-уведомлений</li>
       </ul>
+    </div>
+  </app-modal>
+  <app-modal
+    class="modal"
+    [(visible)]="isDeleteModalOpen"
+    header="Вы уверены, что хотите удалить"
+    position="center"
+  >
+    <div class="modal__button-wrapper">
+      <p-button
+        label="Удалить"
+        severity="danger"
+        (click)="deleteAdvert()"
+        [loading]="deleteLoading()"
+      />
+      <p-button
+        label="Отменить"
+        severity="secondary"
+        (click)="isDeleteModalOpen.set(false)"
+        [disabled]="deleteLoading()"
+      />
     </div>
   </app-modal>
 }

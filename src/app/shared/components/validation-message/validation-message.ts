@@ -28,7 +28,6 @@ export class ValidationMessage {
       minlength: get('minlength') ?? get('minLength'),
       maxlength: get('maxlength') ?? get('maxLength'),
       email: get('email'),
-      pattern: get('pattern'),
     };
   }
 
@@ -60,10 +59,7 @@ export class ValidationMessage {
   }
   getTextEmail(): string {
     return (
-      this.normalize(this.messages())?.email ?? 'Введите корректный e-mail.'
+      this.normalize(this.messages())?.email ?? 'Введите корректный e-mail!'
     );
-  }
-  getTextPattern(): string {
-    return this.normalize(this.messages())?.pattern ?? 'Неверный формат.';
   }
 }

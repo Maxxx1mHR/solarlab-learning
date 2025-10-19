@@ -36,17 +36,11 @@ export class AuthorizationService {
       tap((user) => {
         this.userStoreService.setUser(user);
         localStorage.setItem('user', JSON.stringify(user));
-        this.userApiService.getCurrentUser(); // Удалить???
-        // this.authStateService.setState(true);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Успешно',
-          detail: 'Вы вошли в систему',
-        });
+        // this.userApiService.getCurrentUser(); // Удалить???
       }),
       catchError((err) => {
         this.messageService.add({
-          severity: 'warn',
+          severity: 'error',
           summary: 'Ошибка',
           detail: `${err?.error?.errors?.[0]}`,
         });
@@ -56,18 +50,19 @@ export class AuthorizationService {
   }
 
   currentUser() {
-    if (this.authStateService.getState()) {
-      return this?.userApiService?.getCurrentUser()?.pipe(
-        map(mapUserDtoToUser),
-        tap((user) => this.userStoreService.setUser(user)),
-      );
-    }
-    return of(null);
+    // if (this.authStateService.getState()) {
+    return this?.userApiService.getCurrentUser().pipe(
+      map(mapUserDtoToUser),
+      tap((user) => this.userStoreService.setUser(user)),
+    );
+    // }
+    // return of(null);
   }
 
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('access_token');
+    this.userStoreService.reset();
     this.authStateService.setState(false);
     this.router.navigateByUrl('/', { replaceUrl: true });
   }

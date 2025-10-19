@@ -12,6 +12,7 @@ import { MyAdvertService, MyAdvertStoreService } from '../../../service';
 import { finalize } from 'rxjs';
 import { NotFound } from '@widgets';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuthorizationService } from '@core';
 
 @Component({
   selector: 'app-my-adverts',
@@ -20,11 +21,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './my-adverts.scss',
   standalone: true,
 })
-export class MyAdverts {
+export class MyAdverts implements OnInit {
   // Services
   private readonly advertService = inject(MyAdvertService);
   private readonly userStoreService = inject(UserStoreService);
   readonly advertStoreService = inject(MyAdvertStoreService);
+  readonly authorizationService = inject(AuthorizationService);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -52,6 +54,10 @@ export class MyAdverts {
   //   });
   // }
   private prevUserId: string | null = null;
+
+  ngOnInit() {
+    this.authorizationService.currentUser()?.subscribe();
+  }
 
   constructor() {
     effect((onCleanup) => {

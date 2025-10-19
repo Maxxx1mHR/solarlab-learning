@@ -71,12 +71,14 @@
       variant="text"
       severity="secondary"
       routerLink="my-adverts"
+      (click)="onHide()"
     />
     <p-button
       label="Профиль"
       variant="text"
       severity="secondary"
       routerLink="profile"
+      (click)="onHide()"
     />
     @if (userStore.user()?.role === "Admin") {
       <p-button
@@ -84,6 +86,7 @@
         variant="text"
         severity="secondary"
         routerLink="user-management"
+        (click)="onHide()"
       />
     }
     <p-button
